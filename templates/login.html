@@ -1,0 +1,80 @@
+{% extends "base.html" %} {% block content %}
+<!-- Login Section -->
+<section class="hero-section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-5" data-aos="fade-up" data-aos-duration="1000">
+        <div class="hero-form-card">
+          <h3 class="form-title text-center mb-4 form-title-home">
+            Login to Community Safety
+          </h3>
+          <form method="POST" action="{{ url_for('login_page') }}" novalidate>
+            {{ form.hidden_tag() }}
+            <div class="mb-3">
+              {{ form.email.label(class="form-label visually-hidden") }}
+              {% if form.email.errors %}
+              {{ form.email(class="form-control is-invalid", placeholder="Email Address") }}
+              <div class="invalid-feedback">
+                {% for error in form.email.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+              {% else %}
+              {{ form.email(class="form-control", placeholder="Email Address") }}
+              {% endif %}
+            </div>
+            <div class="mb-3">
+              {{ form.password.label(class="form-label visually-hidden") }}
+              {% if form.password.errors %}
+              {{ form.password(class="form-control is-invalid", placeholder="Password") }}
+              <div class="invalid-feedback">
+                {% for error in form.password.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+              {% else %}
+              {{ form.password(class="form-control", placeholder="Password") }}
+              {% endif %}
+            </div>
+            <div class="mb-3 form-check">
+              {{ form.remember(class="form-check-input", id="rememberMe") }}
+              {{ form.remember.label(class="form-check-label", for="rememberMe") }}
+              <a href="{{ url_for('home') }}" class="float-end"
+                >Forgot password?</a
+              >
+            </div>
+            {{ form.submit(class="btn btn-qualify w-100 mb-3") }}
+            <div class="text-center">
+              <p>Or login with:</p>
+              <div class="social-login mb-3">
+                <button type="button" class="btn btn-outline-secondary me-2">
+                  <i class="fab fa-google"></i> Google
+                </button>
+                <button type="button" class="btn btn-outline-secondary me-2">
+                  <i class="fab fa-facebook-f"></i> Facebook
+                </button>
+                <button type="button" class="btn btn-outline-secondary">
+                  <i class="fab fa-twitter"></i> Twitter
+                </button>
+              </div>
+              <p>
+                Don't have an account?
+                <a href="{{ url_for('register_page') }}">Sign up</a>
+              </p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="wave-container">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+      <path
+        fill="#ffffff"
+        fill-opacity="1"
+        d="M0,96L48,112C96,128,192,160,288,186.7C384,213,480,235,576,218.7C672,203,768,149,864,128C960,107,1056,117,1152,138.7C1248,160,1344,192,1392,208L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+      ></path>
+    </svg>
+  </div>
+</section>
+{% endblock %}

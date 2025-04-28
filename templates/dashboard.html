@@ -1,0 +1,434 @@
+{% extends "base.html" %} {% block content %}
+<!-- Dashboard Section -->
+<section class="py-5 mt-5 bg-light">
+  <div class="container py-4">
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <h1 class="h3">Resident Dashboard</h1>
+        <p class="text-muted">
+          Welcome back, {{ user.first_name }}! Here's what's happening in your
+          neighborhood.
+        </p>
+      </div>
+      <div class="col-md-6 text-md-end">
+        <div class="btn-group">
+          <button
+            class="btn btn-outline-secondary dropdown-toggle"
+            type="button"
+            data-bs-toggle="dropdown"
+          >
+            <i class="material-icons small align-middle">place</i> Little Italy
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><h6 class="dropdown-header">Change Neighborhood</h6></li>
+            <li>
+              <a class="dropdown-item active" href="#">Little Italy</a>
+            </li>
+            <li><a class="dropdown-item" href="#">Downtown</a></li>
+            <li><a class="dropdown-item" href="#">Harbor East</a></li>
+          </ul>
+        </div>
+        <a
+          href="{{ url_for('report_incident_page') }}"
+          class="btn btn-qualify ms-2"
+        >
+          <i class="material-icons small align-middle">report_problem</i>
+          Report Incident
+        </a>
+      </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="row g-4 mb-4">
+      <div class="col-md-3 col-sm-6">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-3">
+              <div
+                class="icon-box me-3"
+                style="background-color: rgba(26, 58, 110, 0.1)"
+              >
+                <i class="material-icons" style="color: var(--primary-color)"
+                  >report_problem</i
+                >
+              </div>
+              <div>
+                <h6 class="mb-0 text-muted">Total Incidents</h6>
+                <h3 class="mb-0">24</h3>
+              </div>
+            </div>
+            <p class="text-muted small mb-0">Last 30 days in your area</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-3">
+              <div
+                class="icon-box me-3"
+                style="background-color: rgba(242, 121, 53, 0.1)"
+              >
+                <i class="material-icons" style="color: var(--secondary-color)"
+                  >videocam</i
+                >
+              </div>
+              <div>
+                <h6 class="mb-0 text-muted">Camera Coverage</h6>
+                <h3 class="mb-0">72%</h3>
+              </div>
+            </div>
+            <p class="text-muted small mb-0">Of your neighborhood area</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-3">
+              <div
+                class="icon-box me-3"
+                style="background-color: rgba(46, 204, 113, 0.1)"
+              >
+                <i class="material-icons" style="color: #2ecc71"
+                  >trending_down</i
+                >
+              </div>
+              <div>
+                <h6 class="mb-0 text-muted">Incident Trend</h6>
+                <h3 class="mb-0">-12%</h3>
+              </div>
+            </div>
+            <p class="text-muted small mb-0">Compared to previous month</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-3">
+              <div
+                class="icon-box me-3"
+                style="background-color: rgba(52, 152, 219, 0.1)"
+              >
+                <i class="material-icons" style="color: #3498db">people</i>
+              </div>
+              <div>
+                <h6 class="mb-0 text-muted">Safety Leaders</h6>
+                <h3 class="mb-0">8</h3>
+              </div>
+            </div>
+            <p class="text-muted small mb-0">Active in your neighborhood</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <!-- Recent Incidents -->
+      <div class="col-lg-8">
+        <div class="card border-0 shadow-sm mb-4">
+          <div class="card-header bg-white py-3">
+            <div class="d-flex justify-content-between align-items-center">
+              <h5 class="mb-0">Recent Incidents</h5>
+              <a
+                href="{{ url_for('view_all_incidents') }}"
+                class="btn btn-sm btn-outline-primary"
+                >View All</a
+              >
+            </div>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table table-hover mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for incident in incidents %}
+                  <tr>
+                    <td>
+                      <a
+                        href="{{ url_for('incident_detail', incident_id=incident.id) }}"
+                        class="text-decoration-none"
+                        >{{ incident.incident_id_str }}</a
+                      >
+                    </td>
+                    <td>
+                      {% if 'Suspicious' in incident.incident_type %}
+                      <span class="badge bg-warning text-dark">{{
+                        incident.incident_type
+                      }}</span>
+                      {% elif 'Break-in' in incident.incident_type %}
+                      <span class="badge bg-danger">{{
+                        incident.incident_type
+                      }}</span>
+                      {% elif 'Vandalism' in incident.incident_type %}
+                      <span class="badge bg-secondary">{{
+                        incident.incident_type
+                      }}</span>
+                      {% elif 'Theft' in incident.incident_type %}
+                      <span class="badge bg-primary">{{
+                        incident.incident_type
+                      }}</span>
+                      {% else %}
+                      <span class="badge bg-info">{{
+                        incident.incident_type
+                      }}</span>
+                      {% endif %}
+                    </td>
+                    <td>{{ incident.location_address }}</td>
+                    <td>
+                      {{ incident.incident_datetime.strftime('%b %d, %Y') }}
+                    </td>
+                    <td>
+                      {% if incident.status == 'New' %}
+                      <span class="badge bg-danger">{{ incident.status }}</span>
+                      {% elif incident.status == 'In Progress' %}
+                      <span class="badge bg-info">{{ incident.status }}</span>
+                      {% elif incident.status == 'Resolved' %}
+                      <span class="badge bg-success">{{
+                        incident.status
+                      }}</span>
+                      {% else %}
+                      <span class="badge bg-secondary">{{
+                        incident.status
+                      }}</span>
+                      {% endif %}
+                    </td>
+                    <td>
+                      <a
+                        href="{{ url_for('incident_detail', incident_id=incident.id) }}"
+                        class="btn btn-sm btn-outline-secondary"
+                      >
+                        <i class="material-icons small">visibility</i>
+                      </a>
+                    </td>
+                  </tr>
+                  {% else %}
+                  <tr>
+                    <td colspan="6" class="text-center text-muted">
+                      No recent incidents to display.
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Incident Map -->
+        <div class="card border-0 shadow-sm">
+          <div class="card-header bg-white py-3">
+            <div class="d-flex justify-content-between align-items-center">
+              <h5 class="mb-0">Neighborhood Incident Map</h5>
+              <div>
+                <select class="form-select form-select-sm">
+                  <option>Last 30 Days</option>
+                  <option>Last 90 Days</option>
+                  <option>Last 6 Months</option>
+                  <option>Last Year</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="card-body p-0">
+            <div
+              class="map-container"
+              style="height: 400px; background-color: #e9e9e9"
+            >
+              <img
+                src="https://via.placeholder.com/800x400/e9e9e9/666666?text=Interactive+Incident+Map"
+                class="img-fluid"
+                style="width: 100%; height: 100%; object-fit: cover"
+                alt="Incident Map"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <!-- Your Cameras -->
+        <div class="card border-0 shadow-sm mb-4">
+          <div class="card-header bg-white py-3">
+            <div class="d-flex justify-content-between align-items-center">
+              <h5 class="mb-0">Your Cameras</h5>
+              <a
+                href="{{ url_for('camera_register_page') }}"
+                class="btn btn-sm btn-outline-primary"
+                >Register Camera</a
+              >
+            </div>
+          </div>
+          <div class="card-body">
+            {% for camera in cameras %}
+            <div
+              class="d-flex align-items-center {% if not loop.last %}mb-3{% endif %}"
+            >
+              <div class="me-3">
+                <span class="badge rounded-pill bg-primary p-2">
+                  <i class="material-icons">videocam</i>
+                </span>
+              </div>
+              <div>
+                <h6 class="mb-0">
+                  {{ camera.camera_name if camera.camera_name else 'Camera #'~camera.id }}
+                </h6>
+                <p class="text-muted small mb-0">
+                  Registered: {{ camera.registered_on.strftime('%b %d, %Y') }}
+                  {% if camera.is_verified %}
+                  <span class="badge bg-success ms-2">Verified</span>
+                  {% else %}
+                  <span class="badge bg-warning text-dark ms-2"
+                    >Pending Verification</span
+                  >
+                  {% endif %}
+                </p>
+              </div>
+              <a
+                href="{{ url_for('camera_detail', camera_id=camera.id) }}"
+                class="btn btn-sm btn-link ms-auto"
+                >Manage</a
+              >
+            </div>
+            {% else %}
+            <p class="text-center text-muted">
+              You haven't registered any cameras yet.
+            </p>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Neighborhood Updates -->
+        <div class="card border-0 shadow-sm mb-4">
+          <div class="card-header bg-white py-3">
+            <h5 class="mb-0">Neighborhood Updates</h5>
+          </div>
+          <div class="card-body">
+            <div class="update-item mb-3 pb-3 border-bottom">
+              <h6>New Safety Leader Appointed</h6>
+              <p class="text-muted small mb-0">
+                Jane Smith has been appointed as a new safety leader for the
+                Little Italy neighborhood.
+              </p>
+              <div class="d-flex align-items-center mt-2">
+                <span class="text-muted small">June 10, 2023</span>
+                <a href="#" class="btn btn-sm btn-link ms-auto">Read More</a>
+              </div>
+            </div>
+            <div class="update-item mb-3 pb-3 border-bottom">
+              <h6>Community Safety Meeting</h6>
+              <p class="text-muted small mb-0">
+                Join us for the monthly community safety meeting at the
+                Community Center.
+              </p>
+              <div class="d-flex align-items-center mt-2">
+                <span class="text-muted small">June 15, 2023 - 7:00 PM</span>
+                <a href="#" class="btn btn-sm btn-link ms-auto">RSVP</a>
+              </div>
+            </div>
+            <div class="update-item">
+              <h6>Camera Registration Drive</h6>
+              <p class="text-muted small mb-0">
+                Help improve neighborhood security by registering your security
+                cameras.
+              </p>
+              <div class="d-flex align-items-center mt-2">
+                <span class="text-muted small">June 20-30, 2023</span>
+                <a
+                  href="{{ url_for('camera_register_page') }}"
+                  class="btn btn-sm btn-link ms-auto"
+                  >Register</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Safety Statistics -->
+        <div class="card border-0 shadow-sm">
+          <div class="card-header bg-white py-3">
+            <h5 class="mb-0">Safety Statistics</h5>
+          </div>
+          <div class="card-body">
+            <div class="mb-4">
+              <div class="d-flex justify-content-between mb-1">
+                <span>Theft</span>
+                <span>42%</span>
+              </div>
+              <div class="progress" style="height: 8px">
+                <div
+                  class="progress-bar bg-primary"
+                  role="progressbar"
+                  style="width: 42%"
+                ></div>
+              </div>
+            </div>
+            <div class="mb-4">
+              <div class="d-flex justify-content-between mb-1">
+                <span>Suspicious Activity</span>
+                <span>30%</span>
+              </div>
+              <div class="progress" style="height: 8px">
+                <div
+                  class="progress-bar"
+                  role="progressbar"
+                  style="width: 30%; background-color: #f1c40f"
+                ></div>
+              </div>
+            </div>
+            <div class="mb-4">
+              <div class="d-flex justify-content-between mb-1">
+                <span>Vandalism</span>
+                <span>15%</span>
+              </div>
+              <div class="progress" style="height: 8px">
+                <div
+                  class="progress-bar bg-secondary"
+                  role="progressbar"
+                  style="width: 15%"
+                ></div>
+              </div>
+            </div>
+            <div class="mb-4">
+              <div class="d-flex justify-content-between mb-1">
+                <span>Break-ins</span>
+                <span>8%</span>
+              </div>
+              <div class="progress" style="height: 8px">
+                <div
+                  class="progress-bar bg-danger"
+                  role="progressbar"
+                  style="width: 8%"
+                ></div>
+              </div>
+            </div>
+            <div>
+              <div class="d-flex justify-content-between mb-1">
+                <span>Other</span>
+                <span>5%</span>
+              </div>
+              <div class="progress" style="height: 8px">
+                <div
+                  class="progress-bar bg-info"
+                  role="progressbar"
+                  style="width: 5%"
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

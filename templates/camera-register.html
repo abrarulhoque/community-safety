@@ -1,0 +1,353 @@
+{% extends "base.html" %} {% block content %}
+<!-- Camera Registration Section -->
+<section class="py-5 mt-5">
+  <div class="container py-4">
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <div class="mb-5 text-center">
+          <h1 class="h2 mb-3">Register Your Security Camera</h1>
+          <p class="text-muted px-lg-5">
+            Help improve neighborhood safety by registering your security
+            cameras in our community network. Your camera information will be
+            verified by a safety leader and will help in incident
+            investigations.
+          </p>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-lg-4 order-lg-2">
+            <div
+              class="card border-0 shadow-sm sticky-lg-top"
+              style="top: 100px"
+            >
+              <div class="card-header bg-white py-3">
+                <h5 class="mb-0">Why Register Your Camera?</h5>
+              </div>
+              <div class="card-body">
+                <div class="d-flex mb-4">
+                  <div class="me-3">
+                    <span class="badge rounded-pill bg-primary p-2">
+                      <i class="material-icons">security</i>
+                    </span>
+                  </div>
+                  <div>
+                    <h6>Enhance Neighborhood Safety</h6>
+                    <p class="text-muted small mb-0">
+                      Registered cameras help deter crime and aid in incident
+                      investigations.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="d-flex mb-4">
+                  <div class="me-3">
+                    <span class="badge rounded-pill bg-primary p-2">
+                      <i class="material-icons">visibility</i>
+                    </span>
+                  </div>
+                  <div>
+                    <h6>Privacy Protected</h6>
+                    <p class="text-muted small mb-0">
+                      We never access your camera feed without your explicit
+                      permission.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="d-flex mb-4">
+                  <div class="me-3">
+                    <span class="badge rounded-pill bg-primary p-2">
+                      <i class="material-icons">map</i>
+                    </span>
+                  </div>
+                  <div>
+                    <h6>Community Coverage</h6>
+                    <p class="text-muted small mb-0">
+                      See coverage areas and help fill gaps in neighborhood
+                      security.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="alert alert-info small mb-0">
+                  <i class="material-icons small align-middle me-2">info</i>
+                  Your camera information is only visible to verified safety
+                  leaders and law enforcement officials.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-8 order-lg-1">
+            <div class="card border-0 shadow-sm">
+              <div class="card-header bg-white py-3">
+                <h5 class="mb-0">Camera Registration Form</h5>
+              </div>
+              <div class="card-body">
+                <form
+                  method="POST"
+                  action="{{ url_for('camera_register_page') }}"
+                >
+                  {{ form.hidden_tag() }}
+                  <!-- Camera Location -->
+                  <div class="mb-4">
+                    <h6 class="mb-3">Camera Location</h6>
+
+                    <div class="mb-3">
+                      {{ form.address.label(class="form-label") }}
+                      {% if form.address.errors %}
+                      {{ form.address(class="form-control is-invalid") }}
+                      <div class="invalid-feedback">
+                        {% for error in form.address.errors %}<span>{{
+                          error
+                        }}</span
+                        >{% endfor %}
+                      </div>
+                      {% else %}
+                      {{ form.address(class="form-control") }}
+                      {% endif %}
+                      <div class="form-text text-muted">
+                        Autofilled from your profile
+                      </div>
+                    </div>
+
+                    <div class="mb-3">
+                      {{ form.camera_position.label(class="form-label") }}
+                      {% if form.camera_position.errors %}
+                      {{ form.camera_position(class="form-control is-invalid") }}
+                      <div class="invalid-feedback">
+                        {% for error in form.camera_position.errors %}<span>{{
+                          error
+                        }}</span
+                        >{% endfor %}
+                      </div>
+                      {% else %}
+                      {{ form.camera_position(class="form-control") }}
+                      {% endif %}
+                      <div class="form-text text-muted">
+                        Drag the camera icon to indicate exact position on your
+                        property
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Camera Details -->
+                  <div class="mb-4">
+                    <h6 class="mb-3">Camera Details</h6>
+
+                    <div class="row mb-3">
+                      <div class="col-md-6">
+                        {{ form.camera_name.label(class="form-label") }}
+                        {% if form.camera_name.errors %}
+                        {{ form.camera_name(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                          {% for error in form.camera_name.errors %}<span>{{
+                            error
+                          }}</span
+                          >{% endfor %}
+                        </div>
+                        {% else %}
+                        {{ form.camera_name(class="form-control") }}
+                        {% endif %}
+                      </div>
+                      <div class="col-md-6">
+                        {{ form.camera_type.label(class="form-label") }}
+                        {% if form.camera_type.errors %}
+                        {{ form.camera_type(class="form-select is-invalid") }}
+                        <div class="invalid-feedback">
+                          {% for error in form.camera_type.errors %}<span>{{
+                            error
+                          }}</span
+                          >{% endfor %}
+                        </div>
+                        {% else %}
+                        {{ form.camera_type(class="form-select") }}
+                        {% endif %}
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <div class="col-md-6">
+                        {{ form.camera_brand.label(class="form-label") }}
+                        {% if form.camera_brand.errors %}
+                        {{ form.camera_brand(class="form-select is-invalid") }}
+                        <div class="invalid-feedback">
+                          {% for error in form.camera_brand.errors %}<span>{{
+                            error
+                          }}</span
+                          >{% endfor %}
+                        </div>
+                        {% else %}
+                        {{ form.camera_brand(class="form-select") }}
+                        {% endif %}
+                      </div>
+                      <div class="col-md-6">
+                        {{ form.recording_type.label(class="form-label") }}
+                        {% if form.recording_type.errors %}
+                        {{ form.recording_type(class="form-select is-invalid") }}
+                        <div class="invalid-feedback">
+                          {% for error in form.recording_type.errors %}<span>{{
+                            error
+                          }}</span
+                          >{% endfor %}
+                        </div>
+                        {% else %}
+                        {{ form.recording_type(class="form-select") }}
+                        {% endif %}
+                      </div>
+                    </div>
+
+                    <div class="mb-3">
+                      {{ form.coverage_area_description.label(class="form-label") }}
+                      {% if form.coverage_area_description.errors %}
+                      {{ form.coverage_area_description(class="form-control is-invalid") }}
+                      <div class="invalid-feedback">
+                        {% for error in form.coverage_area_description.errors
+                        %}<span>{{ error }}</span
+                        >{% endfor %}
+                      </div>
+                      {% else %}
+                      {{ form.coverage_area_description(class="form-control") }}
+                      {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                      {{ form.footage_retention_period.label(class="form-label") }}
+                      {% if form.footage_retention_period.errors %}
+                      {{ form.footage_retention_period(class="form-select is-invalid") }}
+                      <div class="invalid-feedback">
+                        {% for error in form.footage_retention_period.errors
+                        %}<span>{{ error }}</span
+                        >{% endfor %}
+                      </div>
+                      {% else %}
+                      {{ form.footage_retention_period(class="form-select") }}
+                      {% endif %}
+                    </div>
+                  </div>
+
+                  <!-- Owner Information -->
+                  <div class="mb-4">
+                    <h6 class="mb-3">Owner Information</h6>
+
+                    <div class="row mb-3">
+                      <div class="col-md-6">
+                        {{ form.owner_name.label(class="form-label") }}
+                        {% if form.owner_name.errors %}
+                        {{ form.owner_name(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                          {% for error in form.owner_name.errors %}<span>{{
+                            error
+                          }}</span
+                          >{% endfor %}
+                        </div>
+                        {% else %}
+                        {{ form.owner_name(class="form-control") }}
+                        {% endif %}
+                        <div class="form-text text-muted">
+                          Autofilled from your profile
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        {{ form.contact_email.label(class="form-label") }}
+                        {% if form.contact_email.errors %}
+                        {{ form.contact_email(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                          {% for error in form.contact_email.errors %}<span>{{
+                            error
+                          }}</span
+                          >{% endfor %}
+                        </div>
+                        {% else %}
+                        {{ form.contact_email(class="form-control") }}
+                        {% endif %}
+                        <div class="form-text text-muted">
+                          Autofilled from your profile
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="mb-3">
+                      {{ form.alternative_contact_method.label(class="form-label") }}
+                      {{ form.alternative_contact_method(class="form-control") }}
+                    </div>
+
+                    <div class="mb-3">
+                      {{ form.preferred_contact_hours.label(class="form-label") }}
+                      {% if form.preferred_contact_hours.errors %}
+                      {{ form.preferred_contact_hours(class="form-select is-invalid") }}
+                      <div class="invalid-feedback">
+                        {% for error in form.preferred_contact_hours.errors
+                        %}<span>{{ error }}</span
+                        >{% endfor %}
+                      </div>
+                      {% else %}
+                      {{ form.preferred_contact_hours(class="form-select") }}
+                      {% endif %}
+                    </div>
+                  </div>
+
+                  <!-- Terms and Submission -->
+                  <div class="mb-4">
+                    <div class="form-check mb-3">
+                      {{ form.terms_check(class="form-check-input") }}
+                      {{ form.terms_check.label(class="form-check-label") }}
+                    </div>
+
+                    <div class="form-check mb-3">
+                      {{ form.footage_check(class="form-check-input") }}
+                      {{ form.footage_check.label(class="form-check-label") }}
+                    </div>
+
+                    <div class="form-check mb-3">
+                      {{ form.privacy_check(class="form-check-input") }}
+                      {{ form.privacy_check.label(class="form-check-label") }}
+                    </div>
+                  </div>
+
+                  <div class="text-end">
+                    {{ form.submit(class="btn btn-primary") }}
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <!-- Success Message (Initially Hidden) -->
+            <div
+              id="successMessage"
+              class="card border-0 shadow-sm mt-4"
+              style="display: none"
+            >
+              <div class="card-body text-center p-5">
+                <div class="mb-4">
+                  <span class="success-icon">
+                    <i class="material-icons">check_circle</i>
+                  </span>
+                </div>
+                <h3 class="mb-3">Camera Registration Submitted!</h3>
+                <p class="mb-4">
+                  Your camera registration has been submitted successfully. A
+                  safety leader will verify your camera information within 1-2
+                  business days.
+                </p>
+                <div>
+                  <a href="dashboard.html" class="btn btn-primary"
+                    >Return to Dashboard</a
+                  >
+                  <button
+                    type="button"
+                    class="btn btn-outline-secondary ms-2"
+                    id="registerAnother"
+                  >
+                    Register Another Camera
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Dynamic Title -->
+    <title>{{ page_title if page_title else 'Community Safety' }}</title>
+    <!-- CSS Links (use url_for) -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='css/style.css') }}"
+      rel="stylesheet"
+    />
+    {% block head_extra %}{% endblock %}
+    <!-- For page-specific head elements -->
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav
+      class="navbar navbar-expand-lg fixed-top {% if request.endpoint != 'home' %}scrolled{% endif %}"
+    >
+      <!-- Adjust scrolled logic if needed -->
+      <div class="container">
+        <a class="navbar-brand" href="{{ url_for('home') }}">
+          <span class="gold-text">Community Safety</span>
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a
+                class="nav-link {% if request.endpoint == 'home' %}active{% endif %}"
+                href="{{ url_for('home') }}"
+                >Home</a
+              >
+            </li>
+            {% if current_user.is_authenticated %}
+            <!-- Links for Logged In Users -->
+            <li class="nav-item">
+              <a
+                class="nav-link {% if request.endpoint == 'dashboard' %}active{% endif %}"
+                href="{{ url_for('dashboard') }}"
+                >Dashboard</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link {% if request.endpoint == 'report_incident_page' %}active{% endif %}"
+                href="{{ url_for('report_incident_page') }}"
+                >Report Incident</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link {% if request.endpoint == 'camera_register_page' %}active{% endif %}"
+                href="{{ url_for('camera_register_page') }}"
+                >Register Camera</a
+              >
+            </li>
+            <!-- Add Resources link later -->
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="userDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="material-icons">account_circle</i>
+                {{ current_user.first_name }}
+              </a>
+              <ul
+                class="dropdown-menu dropdown-menu-end"
+                aria-labelledby="userDropdown"
+              >
+                <li>
+                  <a
+                    class="dropdown-item {% if request.endpoint == 'profile_page' %}active{% endif %}"
+                    href="{{ url_for('profile_page') }}"
+                    >My Profile</a
+                  >
+                </li>
+                <!-- Add Notifications link later -->
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item" href="{{ url_for('logout') }}"
+                    >Log Out</a
+                  >
+                </li>
+              </ul>
+            </li>
+            {% else %}
+            <!-- Links for Logged Out Users -->
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('home') }}#features"
+                >Features</a
+              >
+              <!-- Example anchor link -->
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('home') }}#about"
+                >About Us</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('home') }}#faq">FAQ</a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link {% if request.endpoint == 'register_page' %}active{% endif %}"
+                href="{{ url_for('register_page') }}"
+                >Register</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link btn-qualify {% if request.endpoint == 'login_page' %}active{% endif %}"
+                href="{{ url_for('login_page') }}"
+                >Login</a
+              >
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    <div class="container mt-5 pt-3">
+      {% with messages = get_flashed_messages(with_categories=true) %} {% if
+      messages %} {% for category, message in messages %}
+      <div
+        class="alert alert-{{ category }} alert-dismissible fade show mt-3"
+        role="alert"
+      >
+        {{ message }}
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
+      </div>
+      {% endfor %} {% endif %} {% endwith %}
+    </div>
+
+    <!-- Main Content Block -->
+    <main>{% block content %}{% endblock %}</main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-6 mb-4 mb-lg-0">
+            <h4 class="footer-title">About Community Safety</h4>
+            <p>
+              Community Safety is a community safety platform designed to
+              empower residents and local leaders to work together in creating
+              safer neighborhoods through transparent incident reporting, data
+              visualization, and resource management.
+            </p>
+            <div class="footer-logos mt-3 mb-3">
+              <img
+                src="{{ url_for('static', filename='images/partner1.png') }}"
+                alt="Partner Organization"
+                class="me-2"
+                height="50"
+                onerror="this.src='https://via.placeholder.com/100x50/1a3a6e/ffffff?text=Partner+1'"
+              />
+              <img
+                src="{{ url_for('static', filename='images/partner2.png') }}"
+                alt="Security Badge"
+                class="me-2"
+                height="50"
+                onerror="this.src='https://via.placeholder.com/100x50/1a3a6e/ffffff?text=Partner+2'"
+              />
+              <img
+                src="{{ url_for('static', filename='images/partner3.png') }}"
+                alt="Community Badge"
+                height="50"
+                onerror="this.src='https://via.placeholder.com/100x50/1a3a6e/ffffff?text=Partner+3'"
+              />
+            </div>
+            <div class="footer-social mt-3">
+              <a href="#" class="social-icon"
+                ><i class="fab fa-facebook-f"></i
+              ></a>
+              <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="social-icon"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <h4 class="footer-title">Get in Touch</h4>
+            <ul class="footer-contact">
+              <li>
+                <i class="material-icons">location_on</i>
+                <span>CommunitySafety.org</span>
+              </li>
+              <li>
+                <i class="material-icons">phone</i> <span>555-123-4567</span>
+              </li>
+              <li>
+                <i class="material-icons">email</i>
+                <span>info@communitysafety.org</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <div class="row align-items-center">
+            <div class="col-md-6 mb-3 mb-md-0">
+              <p class="mb-0">
+                ©{{ now.year }} Community Safety. All Rights Reserved
+              </p>
+              <!-- Dynamic Year -->
+            </div>
+            <div class="col-md-6 text-md-end">
+              <ul class="footer-links">
+                <li>
+                  <a href="{{ url_for('privacy_policy') }}">Privacy Policy</a>
+                </li>
+                <li>
+                  <a href="{{ url_for('terms_service') }}">Terms of Service</a>
+                </li>
+                <li><a href="#">Sitemap</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts (use url_for) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    {% block scripts_extra %}{% endblock %}
+    <!-- For page-specific scripts -->
+  </body>
+</html>

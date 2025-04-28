@@ -1,0 +1,168 @@
+{% extends "base.html" %} {% block content %}
+<!-- Register Section -->
+<section class="hero-section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-6" data-aos="fade-up" data-aos-duration="1000">
+        <div class="hero-form-card">
+          <h3 class="form-title text-center mb-4 form-title-home">
+            Create Your Account
+          </h3>
+          <form
+            method="POST"
+            action="{{ url_for('register_page') }}"
+            novalidate
+          >
+            {{ form.hidden_tag() }}
+            <div class="mb-3">
+              {{ form.account_type.label(class="form-label visually-hidden") }}
+              {% if form.account_type.errors %}
+              {{ form.account_type(class="form-select is-invalid") }}
+              <div class="invalid-feedback">
+                {% for error in form.account_type.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+              {% else %}
+              {{ form.account_type(class="form-select") }}
+              {% endif %}
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-6 mb-3 mb-md-0">
+                {{ form.first_name.label(class="form-label visually-hidden") }}
+                {% if form.first_name.errors %}
+                {{ form.first_name(class="form-control is-invalid", placeholder="First Name") }}
+                <div class="invalid-feedback">
+                  {% for error in form.first_name.errors %}
+                  <span>{{ error }}</span>
+                  {% endfor %}
+                </div>
+                {% else %}
+                {{ form.first_name(class="form-control", placeholder="First Name") }}
+                {% endif %}
+              </div>
+              <div class="col-md-6">
+                {{ form.last_name.label(class="form-label visually-hidden") }}
+                {% if form.last_name.errors %}
+                {{ form.last_name(class="form-control is-invalid", placeholder="Last Name") }}
+                <div class="invalid-feedback">
+                  {% for error in form.last_name.errors %}
+                  <span>{{ error }}</span>
+                  {% endfor %}
+                </div>
+                {% else %}
+                {{ form.last_name(class="form-control", placeholder="Last Name") }}
+                {% endif %}
+              </div>
+            </div>
+            <div class="mb-3">
+              {{ form.email.label(class="form-label visually-hidden") }}
+              {% if form.email.errors %}
+              {{ form.email(class="form-control is-invalid", placeholder="Email Address") }}
+              <div class="invalid-feedback">
+                {% for error in form.email.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+              {% else %}
+              {{ form.email(class="form-control", placeholder="Email Address") }}
+              {% endif %}
+            </div>
+            <div class="mb-3">
+              {{ form.phone_number.label(class="form-label visually-hidden") }}
+              {% if form.phone_number.errors %}
+              {{ form.phone_number(class="form-control is-invalid", placeholder="Phone Number") }}
+              <div class="invalid-feedback">
+                {% for error in form.phone_number.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+              {% else %}
+              {{ form.phone_number(class="form-control", placeholder="Phone Number") }}
+              {% endif %}
+            </div>
+            <div class="mb-3">
+              {{ form.address.label(class="form-label visually-hidden") }}
+              {% if form.address.errors %}
+              {{ form.address(class="form-control is-invalid", placeholder="Address") }}
+              <div class="invalid-feedback">
+                {% for error in form.address.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+              {% else %}
+              {{ form.address(class="form-control", placeholder="Address") }}
+              {% endif %}
+            </div>
+            <div class="mb-3">
+              {{ form.password.label(class="form-label visually-hidden") }}
+              {% if form.password.errors %}
+              {{ form.password(class="form-control is-invalid", placeholder="Password") }}
+              <div class="invalid-feedback">
+                {% for error in form.password.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+              {% else %}
+              {{ form.password(class="form-control", placeholder="Password") }}
+              {% endif %}
+            </div>
+            <div class="mb-3">
+              {{ form.confirm_password.label(class="form-label visually-hidden") }}
+              {% if form.confirm_password.errors %}
+              {{ form.confirm_password(class="form-control is-invalid", placeholder="Confirm Password") }}
+              <div class="invalid-feedback">
+                {% for error in form.confirm_password.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+              {% else %}
+              {{ form.confirm_password(class="form-control", placeholder="Confirm Password") }}
+              {% endif %}
+            </div>
+            <div class="mb-3 form-check">
+              {{ form.agree_terms(class="form-check-input", id="termsCheck") }}
+              {{ form.agree_terms.label(class="form-check-label", for="termsCheck") }}
+              {% if form.agree_terms.errors %}
+              <div class="invalid-feedback d-block">
+                {% for error in form.agree_terms.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+            {{ form.submit(class="btn btn-qualify w-100 mb-3") }}
+            <div class="text-center">
+              <p>Or sign up with:</p>
+              <div class="social-login mb-3">
+                <button type="button" class="btn btn-outline-secondary me-2">
+                  <i class="fab fa-google"></i> Google
+                </button>
+                <button type="button" class="btn btn-outline-secondary me-2">
+                  <i class="fab fa-facebook-f"></i> Facebook
+                </button>
+                <button type="button" class="btn btn-outline-secondary">
+                  <i class="fab fa-twitter"></i> Twitter
+                </button>
+              </div>
+              <p>
+                Already have an account?
+                <a href="{{ url_for('login_page') }}">Log in</a>
+              </p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="wave-container">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+      <path
+        fill="#ffffff"
+        fill-opacity="1"
+        d="M0,96L48,112C96,128,192,160,288,186.7C384,213,480,235,576,218.7C672,203,768,149,864,128C960,107,1056,117,1152,138.7C1248,160,1344,192,1392,208L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+      ></path>
+    </svg>
+  </div>
+</section>
+{% endblock %}
