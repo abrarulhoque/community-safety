@@ -152,27 +152,28 @@
       </div>
     </nav>
 
-    <!-- Flash Messages -->
-    <div class="container mt-5 pt-3">
-      {% with messages = get_flashed_messages(with_categories=true) %} {% if
-      messages %} {% for category, message in messages %}
-      <div
-        class="alert alert-{{ category }} alert-dismissible fade show mt-3"
-        role="alert"
-      >
-        {{ message }}
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="alert"
-          aria-label="Close"
-        ></button>
-      </div>
-      {% endfor %} {% endif %} {% endwith %}
-    </div>
-
     <!-- Main Content Block -->
-    <main>{% block content %}{% endblock %}</main>
+    <main>
+      <!-- Flash Messages -->
+      <div class="container pt-3">
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if
+        messages %} {% for category, message in messages %}
+        <div
+          class="alert alert-{{ category }} alert-dismissible fade show mt-3"
+          role="alert"
+        >
+          {{ message }}
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="alert"
+            aria-label="Close"
+          ></button>
+        </div>
+        {% endfor %} {% endif %} {% endwith %}
+      </div>
+      {% block content %}{% endblock %}
+    </main>
 
     <!-- Footer -->
     <footer class="footer">
@@ -192,20 +193,17 @@
                 alt="Partner Organization"
                 class="me-2"
                 height="50"
-                onerror="this.src='https://via.placeholder.com/100x50/1a3a6e/ffffff?text=Partner+1'"
               />
               <img
                 src="{{ url_for('static', filename='images/partner2.png') }}"
                 alt="Security Badge"
                 class="me-2"
                 height="50"
-                onerror="this.src='https://via.placeholder.com/100x50/1a3a6e/ffffff?text=Partner+2'"
               />
               <img
                 src="{{ url_for('static', filename='images/partner3.png') }}"
                 alt="Community Badge"
                 height="50"
-                onerror="this.src='https://via.placeholder.com/100x50/1a3a6e/ffffff?text=Partner+3'"
               />
             </div>
             <div class="footer-social mt-3">
