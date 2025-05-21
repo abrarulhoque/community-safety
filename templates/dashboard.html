@@ -231,7 +231,7 @@
             <div class="d-flex justify-content-between align-items-center">
               <h5 class="mb-0">Neighborhood Incident Map</h5>
               <div>
-                <select class="form-select form-select-sm">
+                <select class="form-select form-select-sm" id="map-time-filter">
                   <option>Last 30 Days</option>
                   <option>Last 90 Days</option>
                   <option>Last 6 Months</option>
@@ -242,19 +242,9 @@
           </div>
           <div class="card-body p-0">
             <div
-              class="map-container"
-              style="height: 400px; background-color: #e9e9e9"
-            >
-              <div
-                class="d-flex justify-content-center align-items-center h-100 text-center"
-                style="height: 400px; background-color: #e9e9e9; color: #666666"
-              >
-                <div>
-                  <i class="material-icons" style="font-size: 48px">map</i>
-                  <p>Interactive Incident Map</p>
-                </div>
-              </div>
-            </div>
+              id="dashboardIncidentMap"
+              style="height: 400px; width: 100%"
+            ></div>
           </div>
         </div>
       </div>
@@ -434,4 +424,9 @@
     </div>
   </div>
 </section>
+
+<!-- Pass incident data to JavaScript -->
+<script>
+  const incidentData = {{ incidents_json|safe }};
+</script>
 {% endblock %}

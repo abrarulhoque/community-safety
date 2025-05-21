@@ -19,6 +19,8 @@ from wtforms import (
     SelectField,
     TextAreaField,
     DateTimeLocalField,
+    FloatField,
+    HiddenField,
 )
 from wtforms.validators import (
     DataRequired,
@@ -32,6 +34,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 import uuid
 from dotenv import load_dotenv
+import json
 
 # Load environment variables from .env file
 load_dotenv()
@@ -56,6 +59,11 @@ login_manager.login_view = (
     "login_page"  # Redirect to login page if user tries to access protected page
 )
 login_manager.login_message_category = "info"  # Bootstrap class for flash message
+
+# --- Google Maps API Key ---
+GOOGLE_MAPS_API_KEY = os.environ.get(
+    "GOOGLE_MAPS_API_KEY", "AIzaSyDIEHdGjOOxc7ppIUT73h9vJfqftyONO40"
+)
 
 
 # --- Models ---
@@ -198,7 +206,8 @@ class LoginForm(FlaskForm):
 class ReportIncidentForm(FlaskForm):
     # Step 1 Fields (Location might be handled via JS/Map API in a real app)
     location_address = StringField("Address or Location", validators=[DataRequired()])
-    # Add hidden fields for lat/lon if using a map API
+    incident_latitude = HiddenField("Latitude")
+    incident_longitude = HiddenField("Longitude")
 
     # Step 2 Fields
     incident_type = SelectField(
@@ -237,7 +246,8 @@ class ReportIncidentForm(FlaskForm):
 
 class CameraRegistrationForm(FlaskForm):
     address = StringField("Address", validators=[DataRequired()])
-    # Add hidden fields for lat/lon
+    camera_latitude = HiddenField("Latitude")
+    camera_longitude = HiddenField("Longitude")
     camera_name = StringField(
         "Camera Name (e.g., Front Door Camera)",
         validators=[Optional(), Length(max=100)],
@@ -324,10 +334,10 @@ class CameraRegistrationForm(FlaskForm):
     submit = SubmitField("Register Camera")
 
 
-# --- Context Processor for Year ---
+# --- Context Processor for Year and Google Maps API Key ---
 @app.context_processor
 def inject_now():
-    return {"now": datetime.utcnow()}
+    return {"now": datetime.utcnow(), "google_maps_api_key": GOOGLE_MAPS_API_KEY}
 
 
 # --- Routes ---
@@ -414,6 +424,24 @@ def dashboard():
         .order_by(Camera.registered_on.desc())
         .all()
     )
+
+    # Prepare incident data for map
+    incidents_json = json.dumps(
+        [
+            {
+                "id": incident.id,
+                "lat": incident.latitude,
+                "lng": incident.longitude,
+                "type": incident.incident_type,
+                "description": incident.description,
+                "date": incident.incident_datetime.strftime("%b %d, %Y"),
+                "status": incident.status,
+            }
+            for incident in recent_incidents
+            if incident.latitude is not None and incident.longitude is not None
+        ]
+    )
+
     # Pass data to the template
     return render_template(
         "dashboard.html",
@@ -421,6 +449,7 @@ def dashboard():
         user=current_user,
         incidents=recent_incidents,
         cameras=user_cameras,
+        incidents_json=incidents_json,
     )
 
 
@@ -442,8 +471,8 @@ def report_incident_page():
         new_incident = Incident(
             incident_id_str=incident_id_str,
             location_address=form.location_address.data,
-            # latitude=form.latitude.data, # Get from map JS later
-            # longitude=form.longitude.data, # Get from map JS later
+            latitude=form.incident_latitude.data,
+            longitude=form.incident_longitude.data,
             incident_type=form.incident_type.data,
             incident_datetime=form.incident_datetime.data,
             description=form.description.data,
@@ -474,8 +503,8 @@ def camera_register_page():
         new_camera = Camera(
             owner_id=current_user.id,
             address=form.address.data,
-            # latitude=form.latitude.data,
-            # longitude=form.longitude.data,
+            latitude=form.camera_latitude.data,
+            longitude=form.camera_longitude.data,
             camera_name=form.camera_name.data,
             camera_type=form.camera_type.data,
             camera_brand=form.camera_brand.data,

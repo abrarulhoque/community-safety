@@ -89,6 +89,18 @@
                   action="{{ url_for('camera_register_page') }}"
                 >
                   {{ form.hidden_tag() }}
+                  <!-- Hidden fields for latitude and longitude -->
+                  <input
+                    type="hidden"
+                    id="camera_latitude"
+                    name="camera_latitude"
+                  />
+                  <input
+                    type="hidden"
+                    id="camera_longitude"
+                    name="camera_longitude"
+                  />
+
                   <!-- Camera Location -->
                   <div class="mb-4">
                     <h6 class="mb-3">Camera Location</h6>
@@ -96,7 +108,7 @@
                     <div class="mb-3">
                       {{ form.address.label(class="form-label") }}
                       {% if form.address.errors %}
-                      {{ form.address(class="form-control is-invalid") }}
+                      {{ form.address(class="form-control is-invalid", id="camera_address") }}
                       <div class="invalid-feedback">
                         {% for error in form.address.errors %}<span>{{
                           error
@@ -104,7 +116,7 @@
                         >{% endfor %}
                       </div>
                       {% else %}
-                      {{ form.address(class="form-control") }}
+                      {{ form.address(class="form-control", id="camera_address") }}
                       {% endif %}
                       <div class="form-text text-muted">
                         Autofilled from your profile
@@ -112,18 +124,11 @@
                     </div>
 
                     <div class="mb-3">
-                      {{ form.camera_position.label(class="form-label") }}
-                      {% if form.camera_position.errors %}
-                      {{ form.camera_position(class="form-control is-invalid") }}
-                      <div class="invalid-feedback">
-                        {% for error in form.camera_position.errors %}<span>{{
-                          error
-                        }}</span
-                        >{% endfor %}
-                      </div>
-                      {% else %}
-                      {{ form.camera_position(class="form-control") }}
-                      {% endif %}
+                      <label class="form-label">Camera Position</label>
+                      <div
+                        id="cameraRegistrationMap"
+                        style="height: 400px; width: 100%"
+                      ></div>
                       <div class="form-text text-muted">
                         Drag the camera icon to indicate exact position on your
                         property

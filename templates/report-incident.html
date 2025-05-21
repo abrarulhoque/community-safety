@@ -115,6 +115,17 @@
           id="reportForm"
         >
           {{ form.hidden_tag() }}
+          <!-- Hidden fields for latitude and longitude -->
+          <input
+            type="hidden"
+            id="incident_latitude"
+            name="incident_latitude"
+          />
+          <input
+            type="hidden"
+            id="incident_longitude"
+            name="incident_longitude"
+          />
 
           <!-- Step 1: Location -->
           <div id="step1" class="report-step active">
@@ -128,6 +139,8 @@
                     <input
                       type="text"
                       class="form-control"
+                      id="location_address"
+                      name="location_address"
                       placeholder="Search for an address..."
                     />
                     <button class="btn btn-outline-secondary" type="button">
@@ -136,6 +149,7 @@
                     <button
                       class="btn btn-outline-primary"
                       type="button"
+                      id="use-current-location"
                       title="Use current location"
                     >
                       <i class="material-icons small">my_location</i>
@@ -148,28 +162,12 @@
 
                 <div class="mb-4">
                   <div
-                    class="map-container"
-                    style="height: 400px; background-color: #e9e9e9"
-                  >
-                    <div
-                      class="d-flex justify-content-center align-items-center h-100 text-center"
-                      style="background-color: #e9e9e9; color: #666666"
-                    >
-                      <div>
-                        <i class="material-icons" style="font-size: 48px"
-                          >map</i
-                        >
-                        <p>
-                          Interactive Map<br />(Drag pin to select exact
-                          location)
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+                    id="incidentReportMap"
+                    style="height: 400px; width: 100%"
+                  ></div>
                 </div>
 
                 <div class="mb-3">
-                  <label class="form-label">Selected Location</label>
                   {{ form.location_address.label(class="form-label") }}
                   {% if form.location_address.errors %}
                   {{ form.location_address(class="form-control is-invalid") }}
@@ -236,13 +234,18 @@
                 </div>
 
                 <div class="mb-4">
-                  <label class="form-label">Description</label>
-                  <textarea
-                    class="form-control"
-                    rows="5"
-                    placeholder="Please provide details about what happened..."
-                    required
-                  ></textarea>
+                  {{ form.description.label(class="form-label") }}
+                  {% if form.description.errors %}
+                  {{ form.description(class="form-control is-invalid", rows="5", placeholder="Please provide details about what happened...") }}
+                  <div class="invalid-feedback">
+                    {% for error in form.description.errors %}<span>{{
+                      error
+                    }}</span
+                    >{% endfor %}
+                  </div>
+                  {% else %}
+                  {{ form.description(class="form-control", rows="5", placeholder="Please provide details about what happened...") }}
+                  {% endif %}
                 </div>
 
                 <div class="mb-4">
