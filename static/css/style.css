@@ -100,6 +100,8 @@ h6 {
   padding: 15px 0;
   transition: var(--transition);
   background-color: transparent;
+  border-bottom: none;
+  box-shadow: none;
 }
 
 .navbar.scrolled {
@@ -547,8 +549,7 @@ h6 {
 /* CTA Section */
 .cta-section {
   padding: 80px 0;
-  background: url('https://via.placeholder.com/1920x600/1a3a6e/ffffff?text=Community+Safety')
-    center/cover no-repeat;
+  background: linear-gradient(135deg, #1a3a6e, #0d1d38);
   position: relative;
   color: var(--text-light);
 }

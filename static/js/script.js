@@ -7,13 +7,18 @@ AOS.init({
 })
 
 // Navbar scroll effect
-window.addEventListener('scroll', function () {
-  const navbar = document.querySelector('.navbar')
-  if (window.scrollY > 50) {
-    navbar.classList.add('scrolled')
-  } else {
-    navbar.classList.remove('scrolled')
-  }
+document.addEventListener('DOMContentLoaded', function () {
+  const navbar = document.getElementById('main-navbar') // Use the ID for precision
+  if (!navbar) return
+
+  // Always ensure the navbar has the scrolled class for consistent styling across all pages
+  navbar.classList.add('scrolled')
+
+  // Keep the scroll event listener for any additional styling you might want to add in the future
+  window.addEventListener('scroll', function () {
+    // The navbar will always have the scrolled class now
+    // This is just a placeholder in case you want to add more scroll-based effects later
+  })
 })
 
 // Smooth scrolling for anchor links

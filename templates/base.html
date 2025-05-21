@@ -36,7 +36,9 @@
   <body>
     <!-- Navbar -->
     <nav
-      class="navbar navbar-expand-lg fixed-top {% if request.endpoint != 'home' %}scrolled{% endif %}"
+      class="navbar navbar-expand-lg fixed-top scrolled"
+      id="main-navbar"
+      data-endpoint="{{ request.endpoint }}"
     >
       <!-- Adjust scrolled logic if needed -->
       <div class="container">
