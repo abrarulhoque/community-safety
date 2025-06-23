@@ -1,168 +1,262 @@
 {% extends "base.html" %} {% block content %}
+
 <!-- Hero Section -->
 <section id="home" class="hero-section">
+  <div class="hero-background"></div>
   <div class="container">
-    <div class="row align-items-center">
+    <div class="row align-items-center min-vh-100">
       <div class="col-lg-6" data-aos="fade-right" data-aos-duration="1000">
-        <h1>
-          Make Your <span class="gold-text">Community</span> Safer Together
-        </h1>
-        <p class="section-subtitle">
-          Empowering residents and local leaders to build safer neighborhoods
-          through collaboration, transparent incident reporting, and resource
-          management.
-        </p>
-        <div class="mt-4">
-          <a
-            href="{{ url_for('register_page') }}"
-            class="btn btn-primary me-3 mb-3 mb-lg-0"
-          >
-            <i class="material-icons">person_add</i> Join Your Community
-          </a>
-          <a
-            href="{{ url_for('report_incident_page') }}"
-            class="btn btn-outline-light"
-          >
-            <i class="material-icons">report_problem</i> Report Incident
-          </a>
+        <div class="hero-content">
+          <span class="hero-badge">🛡️ Community Safety Platform</span>
+          <h1 class="hero-title">
+            Building <span class="gradient-text">Safer Communities</span>
+            <br />Together
+          </h1>
+          <p class="hero-description">
+            Join thousands of residents, safety leaders, and law enforcement
+            officers using our comprehensive platform to report incidents, share
+            information, and coordinate community safety efforts.
+          </p>
+          <div class="hero-stats">
+            <div class="stat-item">
+              <span class="stat-number">25K+</span>
+              <span class="stat-label">Active Users</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">350+</span>
+              <span class="stat-label">Communities</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">94%</span>
+              <span class="stat-label">Satisfaction</span>
+            </div>
+          </div>
+          <div class="hero-actions">
+            <a
+              href="{{ url_for('register_page') }}"
+              class="btn btn-primary btn-lg"
+            >
+              <i class="material-icons">person_add</i>
+              Get Started Free
+            </a>
+            <a href="#features" class="btn btn-outline-primary btn-lg">
+              <i class="material-icons">play_arrow</i>
+              Watch Demo
+            </a>
+          </div>
+          <div class="hero-trust">
+            <span>Trusted by communities nationwide</span>
+            <div class="trust-badges">
+              <span class="badge">🏆 Award Winning</span>
+              <span class="badge">🔒 Secure</span>
+              <span class="badge">✓ Verified</span>
+            </div>
+          </div>
         </div>
       </div>
       <div
-        class="col-lg-6 hero-image-container"
+        class="col-lg-6"
         data-aos="fade-left"
         data-aos-duration="1000"
         data-aos-delay="200"
       >
-        <img
-          src="{{ url_for('static', filename='images/hero.avif') }}"
-          alt="Community Safety"
-          class="img-fluid"
-        />
+        <div class="hero-image-container">
+          <div class="hero-card floating">
+            <div class="card-header">
+              <div class="status-indicator active"></div>
+              <span>Live Dashboard</span>
+            </div>
+            <div class="card-content">
+              <div class="metric">
+                <span class="metric-value">24</span>
+                <span class="metric-label">Reports Today</span>
+                <span class="metric-trend up">↗ +12%</span>
+              </div>
+              <div class="metric">
+                <span class="metric-value">3.2min</span>
+                <span class="metric-label">Avg Response</span>
+                <span class="metric-trend down">↘ -18%</span>
+              </div>
+            </div>
+          </div>
+          <div class="hero-card floating delay-1">
+            <div class="card-icon">📍</div>
+            <div class="card-text">
+              <strong>New Report</strong>
+              <p>Suspicious activity reported on Oak Street</p>
+              <span class="timestamp">2 minutes ago</span>
+            </div>
+          </div>
+          <div class="hero-card floating delay-2">
+            <div class="card-icon">📹</div>
+            <div class="card-text">
+              <strong>Camera Coverage</strong>
+              <p>85% neighborhood coverage active</p>
+              <span class="timestamp">Real-time</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  <div class="wave-container">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-      <path
-        fill="#ffffff"
-        fill-opacity="1"
-        d="M0,96L48,112C96,128,192,160,288,186.7C384,213,480,235,576,218.7C672,203,768,149,864,128C960,107,1056,117,1152,138.7C1248,160,1344,192,1392,208L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
-      ></path>
-    </svg>
+  <div class="scroll-indicator">
+    <div class="scroll-text">Scroll to explore</div>
+    <div class="scroll-arrow"></div>
   </div>
 </section>
 
 <!-- Features Section -->
-<section id="features" class="services-section">
+<section id="features" class="features-section">
   <div class="container">
-    <h2 class="section-title text-center" data-aos="fade-up">
-      Platform Features
-    </h2>
-    <div class="divider mx-auto"></div>
-    <p class="section-description text-center" data-aos="fade-up">
-      Our comprehensive safety solution provides tools for residents, safety
-      leaders and law enforcement to work together effectively.
-    </p>
+    <div class="section-header text-center">
+      <span class="section-tag">Platform Features</span>
+      <h2 class="section-title">Everything You Need for Community Safety</h2>
+      <p class="section-description">
+        Comprehensive tools designed to empower residents, safety leaders, and
+        law enforcement to work together effectively.
+      </p>
+    </div>
 
-    <div class="row g-4 mt-3">
+    <div class="features-grid">
       <!-- Feature 1 -->
-      <div class="col-md-6 col-lg-4" data-aos="fade-up">
-        <div class="service-card h-100">
-          <div class="icon-box">
-            <i class="material-icons">report_problem</i>
-          </div>
-          <h3>Incident Reporting</h3>
+      <div class="feature-card" data-aos="fade-up" data-aos-delay="0">
+        <div class="feature-icon">
+          <i class="material-icons">report_problem</i>
+        </div>
+        <div class="feature-content">
+          <h3>Smart Incident Reporting</h3>
           <p>
-            Report and track incidents in your neighborhood with an intuitive
-            multi-step form. Include photos, videos, and precise location data.
+            Report incidents with our intuitive multi-step form. Upload photos,
+            videos, and precise location data with real-time validation.
           </p>
-          <a href="{{ url_for('report_incident_page') }}" class="service-link">
-            Report Incident <i class="material-icons">arrow_forward</i>
+          <ul class="feature-list">
+            <li>✓ Geolocation mapping</li>
+            <li>✓ Media attachments</li>
+            <li>✓ Priority classification</li>
+            <li>✓ Anonymous reporting</li>
+          </ul>
+          <a href="{{ url_for('report_incident_page') }}" class="feature-link">
+            Start Reporting <i class="material-icons">arrow_forward</i>
           </a>
         </div>
       </div>
 
       <!-- Feature 2 -->
-      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
-        <div class="service-card h-100">
-          <div class="icon-box">
-            <i class="material-icons">videocam</i>
-          </div>
-          <h3>Camera Registry</h3>
-          <p>
-            Register your security cameras to help improve neighborhood
-            coverage. Your information is only shared with verified officials.
-          </p>
-          <a href="{{ url_for('camera_register_page') }}" class="service-link">
-            Register Camera <i class="material-icons">arrow_forward</i>
-          </a>
+      <div
+        class="feature-card featured"
+        data-aos="fade-up"
+        data-aos-delay="100"
+      >
+        <div class="feature-badge">Most Popular</div>
+        <div class="feature-icon">
+          <i class="material-icons">map</i>
         </div>
-      </div>
-
-      <!-- Feature 3 -->
-      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
-        <div class="service-card h-100">
-          <div class="icon-box">
-            <i class="material-icons">map</i>
-          </div>
-          <h3>Interactive Maps</h3>
+        <div class="feature-content">
+          <h3>Interactive Safety Maps</h3>
           <p>
-            Visualize incidents and camera coverage in your area with
-            interactive maps. Identify patterns and areas that need attention.
+            Visualize incidents, camera coverage, and patrol routes with our
+            advanced mapping system. Identify patterns and hotspots.
           </p>
-          <a href="{{ url_for('dashboard') }}" class="service-link">
+          <ul class="feature-list">
+            <li>✓ Real-time incident mapping</li>
+            <li>✓ Heat map analysis</li>
+            <li>✓ Custom filters</li>
+            <li>✓ Export capabilities</li>
+          </ul>
+          <a href="{{ url_for('dashboard') }}" class="feature-link">
             View Dashboard <i class="material-icons">arrow_forward</i>
           </a>
         </div>
       </div>
 
-      <!-- Feature 4 -->
-      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="300">
-        <div class="service-card h-100">
-          <div class="icon-box">
-            <i class="material-icons">notifications</i>
-          </div>
-          <h3>Real-time Alerts</h3>
+      <!-- Feature 3 -->
+      <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+        <div class="feature-icon">
+          <i class="material-icons">videocam</i>
+        </div>
+        <div class="feature-content">
+          <h3>Camera Network Registry</h3>
           <p>
-            Receive notifications about incidents in your area via email, SMS,
-            or through the platform based on your preferences.
+            Register security cameras to improve neighborhood coverage. Connect
+            with verified officials securely when needed.
           </p>
-          <a href="#" class="service-link">
-            Set Alerts <i class="material-icons">arrow_forward</i>
+          <ul class="feature-list">
+            <li>✓ Private registration</li>
+            <li>✓ Coverage mapping</li>
+            <li>✓ Secure access</li>
+            <li>✓ Compliance tracking</li>
+          </ul>
+          <a href="{{ url_for('camera_register_page') }}" class="feature-link">
+            Register Camera <i class="material-icons">arrow_forward</i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Feature 4 -->
+      <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+        <div class="feature-icon">
+          <i class="material-icons">notifications_active</i>
+        </div>
+        <div class="feature-content">
+          <h3>Smart Alerts</h3>
+          <p>
+            Receive intelligent notifications about incidents in your area via
+            email, SMS, or in-app notifications.
+          </p>
+          <ul class="feature-list">
+            <li>✓ Proximity-based alerts</li>
+            <li>✓ Custom preferences</li>
+            <li>✓ Multi-channel delivery</li>
+            <li>✓ Priority filtering</li>
+          </ul>
+          <a href="#" class="feature-link">
+            Configure Alerts <i class="material-icons">arrow_forward</i>
           </a>
         </div>
       </div>
 
       <!-- Feature 5 -->
-      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="400">
-        <div class="service-card h-100">
-          <div class="icon-box">
-            <i class="material-icons">insert_chart</i>
-          </div>
-          <h3>Data Analytics</h3>
+      <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
+        <div class="feature-icon">
+          <i class="material-icons">analytics</i>
+        </div>
+        <div class="feature-content">
+          <h3>Advanced Analytics</h3>
           <p>
-            Access comprehensive statistics and trends to make informed
-            decisions about community safety initiatives.
+            Access comprehensive statistics, trends, and insights to make
+            data-driven safety decisions for your community.
           </p>
-          <a href="#" class="service-link">
+          <ul class="feature-list">
+            <li>✓ Trend analysis</li>
+            <li>✓ Custom reports</li>
+            <li>✓ Predictive insights</li>
+            <li>✓ Performance metrics</li>
+          </ul>
+          <a href="#" class="feature-link">
             View Analytics <i class="material-icons">arrow_forward</i>
           </a>
         </div>
       </div>
 
       <!-- Feature 6 -->
-      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="500">
-        <div class="service-card h-100">
-          <div class="icon-box">
-            <i class="material-icons">groups</i>
-          </div>
-          <h3>Community Resources</h3>
+      <div class="feature-card" data-aos="fade-up" data-aos-delay="500">
+        <div class="feature-icon">
+          <i class="material-icons">groups</i>
+        </div>
+        <div class="feature-content">
+          <h3>Community Hub</h3>
           <p>
-            Connect with safety leaders, access educational resources, and
-            participate in community safety initiatives.
+            Connect with safety leaders, access resources, and participate in
+            community safety initiatives and training.
           </p>
-          <a href="#" class="service-link">
-            Explore Resources <i class="material-icons">arrow_forward</i>
+          <ul class="feature-list">
+            <li>✓ Resource library</li>
+            <li>✓ Training programs</li>
+            <li>✓ Community forums</li>
+            <li>✓ Event coordination</li>
+          </ul>
+          <a href="#" class="feature-link">
+            Join Community <i class="material-icons">arrow_forward</i>
           </a>
         </div>
       </div>
@@ -170,55 +264,105 @@
   </div>
 </section>
 
-<!-- Qualify Section (CTA) -->
-<section id="qualify" class="qualify-section">
+<!-- How It Works Section -->
+<section class="how-it-works-section">
   <div class="container">
-    <div class="row align-items-center">
-      <div class="col-lg-6" data-aos="fade-right">
-        <div class="qualify-stats d-flex justify-content-around text-center">
-          <div class="stat-item">
-            <h3 data-counter="350">0</h3>
-            <p>Communities Using Platform</p>
-          </div>
-          <div class="stat-item">
-            <h3 data-counter="25000">0</h3>
-            <p>Registered Users</p>
-          </div>
-          <div class="stat-item">
-            <h3 data-counter="94">0</h3>
-            <p>% User Satisfaction</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-6" data-aos="fade-left">
-        <div class="qualify-form-card">
-          <h3 class="form-title form-title-home mb-4">
-            Begin Making Your Community Safer
-          </h3>
-          <!-- Simplified Call to Action -->
-          <p class="text-center mb-4">Select your role and get started:</p>
-          <div class="d-grid gap-2">
-            <a
-              href="{{ url_for('register_page', role='Resident') }}"
-              class="btn btn-primary"
-              >Register as Resident</a
-            >
-            <a
-              href="{{ url_for('register_page', role='Community Safety Leader') }}"
-              class="btn btn-primary"
-              >Register as Safety Leader</a
-            >
-            <a
-              href="{{ url_for('register_page', role='Law Enforcement') }}"
-              class="btn btn-primary"
-              >Register as Law Enforcement</a
-            >
-          </div>
-          <p class="text-center mt-3 small">
-            Already have an account?
-            <a href="{{ url_for('login_page') }}">Log In</a>
+    <div class="section-header text-center">
+      <span class="section-tag">How It Works</span>
+      <h2 class="section-title">Get Started in 3 Simple Steps</h2>
+      <p class="section-description">
+        Join thousands of communities already using our platform to improve
+        neighborhood safety.
+      </p>
+    </div>
+
+    <div class="steps-container">
+      <div class="step" data-aos="fade-up" data-aos-delay="0">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h3>Create Your Account</h3>
+          <p>
+            Sign up with your role (Resident, Safety Leader, or Law Enforcement)
+            and verify your community membership.
           </p>
         </div>
+        <div class="step-arrow"></div>
+      </div>
+
+      <div class="step" data-aos="fade-up" data-aos-delay="200">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h3>Set Up Your Profile</h3>
+          <p>
+            Configure your notification preferences, add your address, and
+            optionally register security cameras.
+          </p>
+        </div>
+        <div class="step-arrow"></div>
+      </div>
+
+      <div class="step" data-aos="fade-up" data-aos-delay="400">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h3>Start Collaborating</h3>
+          <p>
+            Report incidents, view community maps, receive alerts, and connect
+            with your safety network.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-container text-center">
+      <a href="{{ url_for('register_page') }}" class="btn btn-primary btn-lg">
+        Start Your Journey <i class="material-icons">arrow_forward</i>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto text-center">
+        <h2 class="stats-title">Proven Results Across Communities</h2>
+        <p class="stats-description">
+          Real data from communities using our platform
+        </p>
+      </div>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card" data-aos="fade-up" data-aos-delay="0">
+        <div class="stat-icon">📉</div>
+        <div class="stat-number" data-counter="47">0</div>
+        <div class="stat-suffix">%</div>
+        <div class="stat-label">Crime Reduction</div>
+        <div class="stat-detail">Average across all communities</div>
+      </div>
+
+      <div class="stat-card" data-aos="fade-up" data-aos-delay="100">
+        <div class="stat-icon">⚡</div>
+        <div class="stat-number" data-counter="86">0</div>
+        <div class="stat-suffix">%</div>
+        <div class="stat-label">Faster Response</div>
+        <div class="stat-detail">Improved emergency response times</div>
+      </div>
+
+      <div class="stat-card" data-aos="fade-up" data-aos-delay="200">
+        <div class="stat-icon">📊</div>
+        <div class="stat-number" data-counter="12">0</div>
+        <div class="stat-suffix">K+</div>
+        <div class="stat-label">Reports Processed</div>
+        <div class="stat-detail">Successfully handled incidents</div>
+      </div>
+
+      <div class="stat-card" data-aos="fade-up" data-aos-delay="300">
+        <div class="stat-icon">✅</div>
+        <div class="stat-number" data-counter="92">0</div>
+        <div class="stat-suffix">%</div>
+        <div class="stat-label">Resolution Rate</div>
+        <div class="stat-detail">Cases successfully resolved</div>
       </div>
     </div>
   </div>
@@ -228,41 +372,97 @@
 <section id="about" class="about-section">
   <div class="container">
     <div class="row align-items-center">
-      <div
-        class="col-lg-6 mb-4 mb-lg-0"
-        data-aos="fade-right"
-        data-aos-duration="1000"
-      >
-        <div class="about-image">
-          <img
-            src="{{ url_for('static', filename='images/about.jpg') }}"
-            alt="About Community Safety"
-            class="img-fluid"
-          />
+      <div class="col-lg-6" data-aos="fade-right" data-aos-duration="1000">
+        <div class="about-content">
+          <span class="section-tag">About Community Safety</span>
+          <h2 class="section-title">
+            Building Safer Communities Through Technology
+          </h2>
+          <p class="about-description">
+            Founded with the vision of connecting communities for safer
+            neighborhoods, our platform bridges the gap between residents,
+            safety leaders, and law enforcement.
+          </p>
+
+          <div class="about-features">
+            <div class="about-feature">
+              <div class="feature-icon">🔒</div>
+              <div class="feature-text">
+                <h4>Privacy First</h4>
+                <p>
+                  Your data is encrypted and only shared with verified officials
+                  when necessary.
+                </p>
+              </div>
+            </div>
+
+            <div class="about-feature">
+              <div class="feature-icon">🤝</div>
+              <div class="feature-text">
+                <h4>Community Driven</h4>
+                <p>
+                  Built by communities, for communities, with input from safety
+                  professionals.
+                </p>
+              </div>
+            </div>
+
+            <div class="about-feature">
+              <div class="feature-icon">📱</div>
+              <div class="feature-text">
+                <h4>Always Accessible</h4>
+                <p>
+                  Available 24/7 across all devices with offline capability for
+                  emergencies.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="about-actions">
+            <a href="#" class="btn btn-primary">Learn More About Us</a>
+            <a href="#" class="btn btn-outline-primary">Meet Our Team</a>
+          </div>
         </div>
       </div>
+
       <div class="col-lg-6" data-aos="fade-left" data-aos-duration="1000">
-        <h2 class="section-title">About Community Safety</h2>
-        <div class="divider mx-auto"></div>
-        <p>
-          Community Safety began with a simple idea: what if we could bring
-          together residents, community leaders, and law enforcement in a
-          collaborative platform focused on neighborhood safety?
-        </p>
-        <p>
-          Our platform provides the tools needed for communities to report
-          incidents, share information securely, and coordinate efforts to
-          create safer neighborhoods. By bringing together various stakeholders,
-          we facilitate more effective communication and response.
-        </p>
-        <p>
-          We believe that everyone deserves to feel safe in their community, and
-          that safety is best achieved through collaboration, transparency, and
-          shared responsibility.
-        </p>
-        <div class="mt-4">
-          <a href="#" class="btn btn-primary me-3">Our Mission</a>
-          <a href="#" class="btn btn-outline-dark">Meet Our Team</a>
+        <div class="about-visual">
+          <div class="visual-card">
+            <div class="card-header">
+              <span class="card-title">Community Impact</span>
+              <span class="card-status">Live Data</span>
+            </div>
+            <div class="impact-metrics">
+              <div class="metric">
+                <span class="metric-number">350+</span>
+                <span class="metric-label">Active Communities</span>
+              </div>
+              <div class="metric">
+                <span class="metric-number">25K+</span>
+                <span class="metric-label">Registered Users</span>
+              </div>
+              <div class="metric">
+                <span class="metric-number">94%</span>
+                <span class="metric-label">Satisfaction Rate</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="floating-elements">
+            <div class="floating-card" style="top: 20%; right: -10%">
+              <span class="emoji">🏘️</span>
+              <span class="text">Safe Neighborhoods</span>
+            </div>
+            <div class="floating-card" style="bottom: 30%; left: -5%">
+              <span class="emoji">👮</span>
+              <span class="text">Verified Officials</span>
+            </div>
+            <div class="floating-card" style="top: 60%; right: 5%">
+              <span class="emoji">📊</span>
+              <span class="text">Real-time Data</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -272,70 +472,48 @@
 <!-- FAQ Section -->
 <section id="faq" class="faq-section">
   <div class="container">
-    <h2 class="section-title text-center" data-aos="fade-up">
-      Frequently Asked Questions
-    </h2>
-    <div class="divider mx-auto"></div>
-    <p class="section-description text-center" data-aos="fade-up">
-      Find answers to common questions about our platform, features, and privacy
-      policies.
-    </p>
+    <div class="section-header text-center">
+      <span class="section-tag">FAQ</span>
+      <h2 class="section-title">Frequently Asked Questions</h2>
+      <p class="section-description">
+        Find answers to common questions about our platform, features, and
+        privacy policies.
+      </p>
+    </div>
 
-    <div class="row mt-5">
+    <div class="row">
       <div class="col-lg-10 mx-auto">
-        <div class="accordion" id="faqAccordion" data-aos="fade-up">
+        <div class="faq-container" data-aos="fade-up">
           <!-- FAQ Item 1 -->
-          <div class="accordion-item">
-            <h2 class="accordion-header" id="headingOne">
-              <button
-                class="accordion-button"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseOne"
-                aria-expanded="true"
-                aria-controls="collapseOne"
-              >
-                How is user information and incident data protected?
-              </button>
-            </h2>
-            <div
-              id="collapseOne"
-              class="accordion-collapse collapse show"
-              aria-labelledby="headingOne"
-              data-bs-parent="#faqAccordion"
-            >
-              <div class="accordion-body">
+          <div class="faq-item">
+            <div class="faq-question">
+              <h3>How is user information and incident data protected?</h3>
+              <div class="faq-toggle">
+                <i class="material-icons">expand_more</i>
+              </div>
+            </div>
+            <div class="faq-answer">
+              <p>
                 We take data security seriously. All information is encrypted
                 and stored securely. Personal information is only shared with
                 verified community safety leaders and law enforcement officials.
                 Your camera information, incident reports, and personal details
                 are never sold to third parties. You can adjust your privacy
                 settings at any time in your user profile.
-              </div>
+              </p>
             </div>
           </div>
 
           <!-- FAQ Item 2 -->
-          <div class="accordion-item">
-            <h2 class="accordion-header" id="headingTwo">
-              <button
-                class="accordion-button collapsed"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseTwo"
-                aria-expanded="false"
-                aria-controls="collapseTwo"
-              >
-                Who can see my registered camera information?
-              </button>
-            </h2>
-            <div
-              id="collapseTwo"
-              class="accordion-collapse collapse"
-              aria-labelledby="headingTwo"
-              data-bs-parent="#faqAccordion"
-            >
-              <div class="accordion-body">
+          <div class="faq-item">
+            <div class="faq-question">
+              <h3>Who can see my registered camera information?</h3>
+              <div class="faq-toggle">
+                <i class="material-icons">expand_more</i>
+              </div>
+            </div>
+            <div class="faq-answer">
+              <p>
                 Only verified safety leaders and law enforcement officials can
                 see detailed camera information. Other community members can
                 only see general coverage areas but not specific camera
@@ -343,31 +521,20 @@
                 feeds directly - if footage is needed for an investigation, a
                 verified official will contact you directly through our secure
                 messaging system.
-              </div>
+              </p>
             </div>
           </div>
 
           <!-- FAQ Item 3 -->
-          <div class="accordion-item">
-            <h2 class="accordion-header" id="headingThree">
-              <button
-                class="accordion-button collapsed"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseThree"
-                aria-expanded="false"
-                aria-controls="collapseThree"
-              >
-                What happens after I report an incident?
-              </button>
-            </h2>
-            <div
-              id="collapseThree"
-              class="accordion-collapse collapse"
-              aria-labelledby="headingThree"
-              data-bs-parent="#faqAccordion"
-            >
-              <div class="accordion-body">
+          <div class="faq-item">
+            <div class="faq-question">
+              <h3>What happens after I report an incident?</h3>
+              <div class="faq-toggle">
+                <i class="material-icons">expand_more</i>
+              </div>
+            </div>
+            <div class="faq-answer">
+              <p>
                 After submitting a report, it is reviewed by community safety
                 leaders (for non-emergency incidents) or immediately routed to
                 law enforcement (for emergencies). You'll receive a confirmation
@@ -376,31 +543,20 @@
                 incident is investigated and resolved. For emergencies, always
                 call 911 first, then report the incident on our platform for
                 community tracking.
-              </div>
+              </p>
             </div>
           </div>
 
           <!-- FAQ Item 4 -->
-          <div class="accordion-item">
-            <h2 class="accordion-header" id="headingFour">
-              <button
-                class="accordion-button collapsed"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseFour"
-                aria-expanded="false"
-                aria-controls="collapseFour"
-              >
-                How do I become a community safety leader?
-              </button>
-            </h2>
-            <div
-              id="collapseFour"
-              class="accordion-collapse collapse"
-              aria-labelledby="headingFour"
-              data-bs-parent="#faqAccordion"
-            >
-              <div class="accordion-body">
+          <div class="faq-item">
+            <div class="faq-question">
+              <h3>How do I become a community safety leader?</h3>
+              <div class="faq-toggle">
+                <i class="material-icons">expand_more</i>
+              </div>
+            </div>
+            <div class="faq-answer">
+              <p>
                 Community safety leaders are typically appointed by neighborhood
                 associations, HOAs, or existing safety committees. If you're
                 interested in becoming a leader, you can apply through our
@@ -409,31 +565,20 @@
                 community. In some areas, leaders must also complete a basic
                 training course and background check to ensure platform
                 integrity.
-              </div>
+              </p>
             </div>
           </div>
 
           <!-- FAQ Item 5 -->
-          <div class="accordion-item">
-            <h2 class="accordion-header" id="headingFive">
-              <button
-                class="accordion-button collapsed"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseFive"
-                aria-expanded="false"
-                aria-controls="collapseFive"
-              >
-                Is there a cost to use the platform?
-              </button>
-            </h2>
-            <div
-              id="collapseFive"
-              class="accordion-collapse collapse"
-              aria-labelledby="headingFive"
-              data-bs-parent="#faqAccordion"
-            >
-              <div class="accordion-body">
+          <div class="faq-item">
+            <div class="faq-question">
+              <h3>Is there a cost to use the platform?</h3>
+              <div class="faq-toggle">
+                <i class="material-icons">expand_more</i>
+              </div>
+            </div>
+            <div class="faq-answer">
+              <p>
                 The basic platform is free for all community residents. Premium
                 features, such as advanced analytics and community management
                 tools, are available for safety leaders and law enforcement
@@ -441,7 +586,7 @@
                 subscriptions through HOA or neighborhood association fees. We
                 also offer grant programs for under-resourced communities -
                 contact us to learn more about eligibility.
-              </div>
+              </p>
             </div>
           </div>
         </div>
@@ -450,83 +595,76 @@
   </div>
 </section>
 
-<!-- Stats Section -->
-<section class="stats-section">
+<!-- CTA Section -->
+<section class="final-cta-section">
   <div class="container">
-    <div class="row">
-      <div class="col-md-3 col-6 text-center" data-aos="fade-up">
-        <div class="stat-box">
-          <h3>
-            <span class="stat-number" data-counter="47">0</span
-            ><span class="stat-prefix">%</span>
-          </h3>
-          <p class="stat-label">Reduction in Crime</p>
+    <div class="cta-content text-center">
+      <div class="cta-icon">🌟</div>
+      <h2>Ready to Transform Your Community?</h2>
+      <p>
+        Join thousands of communities already making their neighborhoods safer
+        with our platform.
+      </p>
+
+      <div class="cta-options">
+        <div class="cta-option" data-aos="fade-up" data-aos-delay="0">
+          <h3>For Residents</h3>
+          <p>
+            Report incidents, stay informed, and connect with your safety
+            network.
+          </p>
+          <a
+            href="{{ url_for('register_page', role='Resident') }}"
+            class="btn btn-primary"
+            >Join as Resident</a
+          >
+        </div>
+
+        <div
+          class="cta-option featured"
+          data-aos="fade-up"
+          data-aos-delay="100"
+        >
+          <div class="popular-badge">Most Popular</div>
+          <h3>For Safety Leaders</h3>
+          <p>
+            Manage community safety, coordinate responses, and access advanced
+            analytics.
+          </p>
+          <a
+            href="{{ url_for('register_page', role='Community Safety Leader') }}"
+            class="btn btn-primary"
+            >Join as Leader</a
+          >
+        </div>
+
+        <div class="cta-option" data-aos="fade-up" data-aos-delay="200">
+          <h3>For Law Enforcement</h3>
+          <p>
+            Access community reports, coordinate with leaders, and improve
+            response times.
+          </p>
+          <a
+            href="{{ url_for('register_page', role='Law Enforcement') }}"
+            class="btn btn-primary"
+            >Join as Officer</a
+          >
         </div>
       </div>
-      <div
-        class="col-md-3 col-6 text-center"
-        data-aos="fade-up"
-        data-aos-delay="100"
-      >
-        <div class="stat-box">
-          <h3>
-            <span class="stat-number" data-counter="86">0</span><span>%</span>
-          </h3>
-          <p class="stat-label">Faster Response</p>
-        </div>
-      </div>
-      <div
-        class="col-md-3 col-6 text-center"
-        data-aos="fade-up"
-        data-aos-delay="200"
-      >
-        <div class="stat-box">
-          <h3>
-            <span class="stat-number" data-counter="12500">0</span
-            ><span>+</span>
-          </h3>
-          <p class="stat-label">Incident Reports</p>
-        </div>
-      </div>
-      <div
-        class="col-md-3 col-6 text-center"
-        data-aos="fade-up"
-        data-aos-delay="300"
-      >
-        <div class="stat-box">
-          <h3>
-            <span class="stat-number" data-counter="92">0</span><span>%</span>
-          </h3>
-          <p class="stat-label">Resolution Rate</p>
+
+      <div class="cta-footer">
+        <p>
+          Already have an account?
+          <a href="{{ url_for('login_page') }}">Sign in here</a>
+        </p>
+        <div class="trust-indicators">
+          <span class="trust-item">🔒 Bank-level Security</span>
+          <span class="trust-item">⚡ 24/7 Support</span>
+          <span class="trust-item">✨ Free to Start</span>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CTA Section -->
-<section class="cta-section">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-8 mx-auto text-center cta-content">
-        <h2>Ready to Join Your Community Safety Network?</h2>
-        <p>
-          Sign up today and be a part of making your neighborhood safer for
-          everyone.
-        </p>
-        <div class="mt-4">
-          <a
-            href="{{ url_for('register_page') }}"
-            class="btn btn-primary me-3 mb-2 mb-md-0"
-          >
-            Create Account
-          </a>
-          <a href="#features" class="btn btn-outline-light mb-2 mb-md-0">
-            Learn More
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 {% endblock %}

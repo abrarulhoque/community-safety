@@ -1,43 +1,271 @@
-// Initialize AOS (Animate On Scroll)
-AOS.init({
-  duration: 800,
-  easing: 'ease-in-out',
-  once: true,
-  mirror: false
+// Modern Community Safety Platform JavaScript
+
+document.addEventListener('DOMContentLoaded', function () {
+  // Initialize all features
+  initNavbar()
+  initFAQ()
+  initCounters()
+  initSmoothScrolling()
+  initAnimations()
+  initFormValidation()
 })
 
-// Navbar scroll effect
-document.addEventListener('DOMContentLoaded', function () {
-  const navbar = document.getElementById('main-navbar') // Use the ID for precision
+// ===== NAVBAR FUNCTIONALITY =====
+function initNavbar () {
+  const navbar = document.getElementById('main-navbar')
   if (!navbar) return
 
-  // Always ensure the navbar has the scrolled class for consistent styling across all pages
-  navbar.classList.add('scrolled')
+  // Handle navbar scroll effect
+  function handleScroll () {
+    if (window.scrollY > 50) {
+      navbar.classList.add('scrolled')
+    } else {
+      navbar.classList.remove('scrolled')
+    }
+  }
 
-  // Keep the scroll event listener for any additional styling you might want to add in the future
-  window.addEventListener('scroll', function () {
-    // The navbar will always have the scrolled class now
-    // This is just a placeholder in case you want to add more scroll-based effects later
-  })
-})
+  // Throttle scroll events for better performance
+  let ticking = false
+  function throttledScroll () {
+    if (!ticking) {
+      requestAnimationFrame(function () {
+        handleScroll()
+        ticking = false
+      })
+      ticking = true
+    }
+  }
 
-// Smooth scrolling for anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function (e) {
-    e.preventDefault()
+  window.addEventListener('scroll', throttledScroll)
 
-    const target = document.querySelector(this.getAttribute('href'))
-    if (target) {
-      window.scrollTo({
-        top: target.offsetTop - 80,
-        behavior: 'smooth'
+  // Handle mobile menu
+  const navbarToggler = navbar.querySelector('.navbar-toggler')
+  const navbarCollapse = navbar.querySelector('.navbar-collapse')
+
+  if (navbarToggler && navbarCollapse) {
+    navbarToggler.addEventListener('click', function () {
+      navbarCollapse.classList.toggle('show')
+    })
+
+    // Close mobile menu when clicking on links
+    const navLinks = navbarCollapse.querySelectorAll('.nav-link')
+    navLinks.forEach(link => {
+      link.addEventListener('click', function () {
+        if (window.innerWidth < 992) {
+          navbarCollapse.classList.remove('show')
+        }
+      })
+    })
+  }
+
+  // Update active nav link on scroll
+  const sections = document.querySelectorAll('section[id]')
+  const navLinks = navbar.querySelectorAll('.nav-link[href^="#"]')
+
+  function updateActiveNavLink () {
+    const scrollPosition = window.scrollY + 100
+
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop
+      const sectionHeight = section.offsetHeight
+      const sectionId = section.getAttribute('id')
+
+      if (
+        scrollPosition >= sectionTop &&
+        scrollPosition < sectionTop + sectionHeight
+      ) {
+        navLinks.forEach(link => {
+          link.classList.remove('active')
+          if (link.getAttribute('href') === `#${sectionId}`) {
+            link.classList.add('active')
+          }
+        })
+      }
+    })
+  }
+
+  window.addEventListener('scroll', throttledScroll)
+}
+
+// ===== FAQ FUNCTIONALITY =====
+function initFAQ () {
+  const faqItems = document.querySelectorAll('.faq-item')
+
+  faqItems.forEach(item => {
+    const question = item.querySelector('.faq-question')
+    const answer = item.querySelector('.faq-answer')
+    const toggle = item.querySelector('.faq-toggle')
+
+    if (question && answer && toggle) {
+      question.addEventListener('click', function () {
+        const isActive = item.classList.contains('active')
+
+        // Close all other FAQ items
+        faqItems.forEach(otherItem => {
+          if (otherItem !== item) {
+            otherItem.classList.remove('active')
+            const otherAnswer = otherItem.querySelector('.faq-answer')
+            if (otherAnswer) {
+              otherAnswer.style.maxHeight = null
+            }
+          }
+        })
+
+        // Toggle current FAQ item
+        if (isActive) {
+          item.classList.remove('active')
+          answer.style.maxHeight = null
+        } else {
+          item.classList.add('active')
+          answer.style.maxHeight = answer.scrollHeight + 'px'
+        }
       })
     }
   })
-})
 
-// Form submission handling
-document.addEventListener('DOMContentLoaded', function () {
+  // Open first FAQ item by default
+  if (faqItems.length > 0) {
+    const firstItem = faqItems[0]
+    const firstAnswer = firstItem.querySelector('.faq-answer')
+    if (firstAnswer) {
+      firstItem.classList.add('active')
+      firstAnswer.style.maxHeight = firstAnswer.scrollHeight + 'px'
+    }
+  }
+}
+
+// ===== COUNTER ANIMATIONS =====
+function initCounters () {
+  const counters = document.querySelectorAll('[data-counter]')
+  const observerOptions = {
+    threshold: 0.7,
+    rootMargin: '0px 0px -50px 0px'
+  }
+
+  const animateCounter = counter => {
+    const target = parseInt(counter.getAttribute('data-counter'))
+    const duration = 2000 // 2 seconds
+    const increment = target / (duration / 16) // 60fps
+    let current = 0
+
+    const updateCounter = () => {
+      current += increment
+      if (current < target) {
+        counter.textContent = Math.floor(current)
+        requestAnimationFrame(updateCounter)
+      } else {
+        counter.textContent = target
+      }
+    }
+
+    updateCounter()
+  }
+
+  const counterObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !entry.target.classList.contains('counted')) {
+        entry.target.classList.add('counted')
+        animateCounter(entry.target)
+      }
+    })
+  }, observerOptions)
+
+  counters.forEach(counter => {
+    counterObserver.observe(counter)
+  })
+}
+
+// ===== SMOOTH SCROLLING =====
+function initSmoothScrolling () {
+  const scrollLinks = document.querySelectorAll('a[href^="#"]')
+
+  scrollLinks.forEach(link => {
+    link.addEventListener('click', function (e) {
+      const href = this.getAttribute('href')
+
+      // Skip if it's just a hash
+      if (href === '#') return
+
+      const target = document.querySelector(href)
+      if (target) {
+        e.preventDefault()
+
+        const headerOffset = 80 // Account for fixed navbar
+        const elementPosition = target.offsetTop
+        const offsetPosition = elementPosition - headerOffset
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        })
+      }
+    })
+  })
+}
+
+// ===== SCROLL ANIMATIONS =====
+function initAnimations () {
+  // Initialize AOS (Animate On Scroll) if available
+  if (typeof AOS !== 'undefined') {
+    AOS.init({
+      duration: 800,
+      easing: 'ease-in-out',
+      once: true,
+      offset: 100
+    })
+  }
+
+  // Parallax effect for hero background
+  const heroSection = document.querySelector('.hero-section')
+  if (heroSection) {
+    window.addEventListener('scroll', function () {
+      const scrolled = window.pageYOffset
+      const rate = scrolled * -0.5
+
+      const heroBackground = heroSection.querySelector('.hero-background')
+      if (heroBackground) {
+        heroBackground.style.transform = `translateY(${rate}px)`
+      }
+    })
+  }
+
+  // Floating animations for hero cards
+  const floatingCards = document.querySelectorAll('.floating')
+  floatingCards.forEach((card, index) => {
+    const delay = index * 0.5
+    card.style.animationDelay = `${delay}s`
+  })
+}
+
+// ===== FORM VALIDATION =====
+function initFormValidation () {
+  const forms = document.querySelectorAll('form')
+
+  forms.forEach(form => {
+    form.addEventListener('submit', function (e) {
+      if (!validateForm(this)) {
+        e.preventDefault()
+        e.stopPropagation()
+      }
+      this.classList.add('was-validated')
+    })
+
+    // Real-time validation
+    const inputs = form.querySelectorAll('input, select, textarea')
+    inputs.forEach(input => {
+      input.addEventListener('blur', function () {
+        validateField(this)
+      })
+
+      input.addEventListener('input', function () {
+        if (this.classList.contains('is-invalid')) {
+          validateField(this)
+        }
+      })
+    })
+  })
+
+  // Handle report form specifically
   const reportForm = document.getElementById('reportForm')
   if (reportForm) {
     reportForm.addEventListener('submit', function (e) {
@@ -60,58 +288,112 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     })
   }
-})
-
-// Statistics counter animation
-const statElements = document.querySelectorAll('.stat-number')
-let animated = false
-
-function animateStats () {
-  if (animated) return
-
-  statElements.forEach(stat => {
-    const target = parseInt(stat.getAttribute('data-counter'), 10)
-    const duration = 2000 // 2 seconds
-    const step = Math.ceil(target / (duration / 20)) // Update every 20ms
-    let current = 0
-
-    const timer = setInterval(() => {
-      current += step
-      if (current >= target) {
-        current = target
-        clearInterval(timer)
-      }
-      stat.textContent = current
-    }, 20)
-  })
-
-  animated = true
 }
 
-// Trigger stats animation when section is in viewport
-const statsSection = document.querySelector('.stats-section')
-if (statsSection) {
-  window.addEventListener('scroll', function () {
-    const rect = statsSection.getBoundingClientRect()
-    const isInViewport =
-      rect.top <= window.innerHeight * 0.75 && rect.bottom >= 0
+function validateForm (form) {
+  let isValid = true
+  const inputs = form.querySelectorAll(
+    'input[required], select[required], textarea[required]'
+  )
 
-    if (isInViewport) {
-      animateStats()
+  inputs.forEach(input => {
+    if (!validateField(input)) {
+      isValid = false
     }
   })
+
+  return isValid
 }
 
-// Mobile menu closing when clicking a nav item
-const navLinks = document.querySelectorAll('.navbar-nav .nav-link')
-const navbarCollapse = document.querySelector('.navbar-collapse')
+function validateField (field) {
+  const value = field.value.trim()
+  const type = field.type
+  let isValid = true
+  let errorMessage = ''
 
-navLinks.forEach(link => {
-  link.addEventListener('click', () => {
-    if (navbarCollapse.classList.contains('show')) {
+  // Check if required field is empty
+  if (field.hasAttribute('required') && !value) {
+    isValid = false
+    errorMessage = 'This field is required.'
+  }
+
+  // Email validation
+  else if (type === 'email' && value) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(value)) {
+      isValid = false
+      errorMessage = 'Please enter a valid email address.'
+    }
+  }
+
+  // Phone validation
+  else if (type === 'tel' && value) {
+    const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/
+    if (!phoneRegex.test(value.replace(/[\s\-\(\)]/g, ''))) {
+      isValid = false
+      errorMessage = 'Please enter a valid phone number.'
+    }
+  }
+
+  // Password strength validation
+  else if (type === 'password' && value) {
+    if (value.length < 8) {
+      isValid = false
+      errorMessage = 'Password must be at least 8 characters long.'
+    } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(value)) {
+      isValid = false
+      errorMessage =
+        'Password must contain at least one uppercase letter, one lowercase letter, and one number.'
+    }
+  }
+
+  // Update field appearance
+  if (isValid) {
+    field.classList.remove('is-invalid')
+    field.classList.add('is-valid')
+    removeErrorMessage(field)
+  } else {
+    field.classList.remove('is-valid')
+    field.classList.add('is-invalid')
+    showErrorMessage(field, errorMessage)
+  }
+
+  return isValid
+}
+
+function showErrorMessage (field, message) {
+  removeErrorMessage(field)
+
+  const errorDiv = document.createElement('div')
+  errorDiv.className = 'invalid-feedback'
+  errorDiv.textContent = message
+
+  field.parentNode.appendChild(errorDiv)
+}
+
+function removeErrorMessage (field) {
+  const existingError = field.parentNode.querySelector('.invalid-feedback')
+  if (existingError) {
+    existingError.remove()
+  }
+}
+
+// ===== ACCESSIBILITY IMPROVEMENTS =====
+
+// Keyboard navigation for custom elements
+document.addEventListener('keydown', function (e) {
+  // Handle Enter key on FAQ questions
+  if (e.key === 'Enter' && e.target.classList.contains('faq-question')) {
+    e.target.click()
+  }
+
+  // Handle Escape key to close mobile menu
+  if (e.key === 'Escape') {
+    const navbarCollapse = document.querySelector('.navbar-collapse.show')
+    if (navbarCollapse) {
       navbarCollapse.classList.remove('show')
     }
-  })
+  }
 })
 
 // Add current year to copyright in footer
