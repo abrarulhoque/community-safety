@@ -179,80 +179,178 @@
 
     <!-- Footer -->
     <footer class="footer">
+      <div class="footer-gradient"></div>
       <div class="container">
-        <div class="row">
-          <div class="col-lg-6 mb-4 mb-lg-0">
-            <h4 class="footer-title">About Community Safety</h4>
-            <p>
-              Community Safety is a community safety platform designed to
-              empower residents and local leaders to work together in creating
-              safer neighborhoods through transparent incident reporting, data
-              visualization, and resource management.
-            </p>
-            <div class="footer-logos mt-3 mb-3">
-              <img
-                src="{{ url_for('static', filename='images/partner1.png') }}"
-                alt="Partner Organization"
-                class="me-2"
-                height="50"
-              />
-              <img
-                src="{{ url_for('static', filename='images/partner2.png') }}"
-                alt="Security Badge"
-                class="me-2"
-                height="50"
-              />
-              <img
-                src="{{ url_for('static', filename='images/partner3.png') }}"
-                alt="Community Badge"
-                height="50"
-              />
+        <div class="footer-main">
+          <div class="row">
+            <!-- Brand Column -->
+            <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+              <div class="footer-brand">
+                <h3 class="footer-logo">Community Safety</h3>
+                <p class="footer-description">
+                  Empowering residents and local leaders to work together in
+                  creating safer neighborhoods through transparent incident
+                  reporting, data visualization, and resource management.
+                </p>
+                <div class="footer-social">
+                  <a href="#" class="social-link" aria-label="Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                  </a>
+                  <a href="#" class="social-link" aria-label="Twitter">
+                    <i class="fab fa-twitter"></i>
+                  </a>
+                  <a href="#" class="social-link" aria-label="Instagram">
+                    <i class="fab fa-instagram"></i>
+                  </a>
+                  <a href="#" class="social-link" aria-label="LinkedIn">
+                    <i class="fab fa-linkedin-in"></i>
+                  </a>
+                  <a href="#" class="social-link" aria-label="YouTube">
+                    <i class="fab fa-youtube"></i>
+                  </a>
+                </div>
+              </div>
             </div>
-            <div class="footer-social mt-3">
-              <a href="#" class="social-icon"
-                ><i class="fab fa-facebook-f"></i
-              ></a>
-              <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-              <a href="#" class="social-icon"
-                ><i class="fab fa-instagram"></i
-              ></a>
-              <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+
+            <!-- Quick Links Column -->
+            <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+              <div class="footer-column">
+                <h4 class="footer-title">Quick Links</h4>
+                <ul class="footer-nav">
+                  <li><a href="{{ url_for('home') }}">Home</a></li>
+                  {% if current_user.is_authenticated %}
+                  <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                  <li>
+                    <a href="{{ url_for('report_incident_page') }}"
+                      >Report Incident</a
+                    >
+                  </li>
+                  <li>
+                    <a href="{{ url_for('camera_register_page') }}"
+                      >Register Camera</a
+                    >
+                  </li>
+                  <li>
+                    <a href="{{ url_for('profile_page') }}">My Profile</a>
+                  </li>
+                  {% else %}
+                  <li><a href="{{ url_for('home') }}#features">Features</a></li>
+                  <li><a href="{{ url_for('home') }}#about">About Us</a></li>
+                  <li><a href="{{ url_for('home') }}#faq">FAQ</a></li>
+                  <li><a href="{{ url_for('register_page') }}">Register</a></li>
+                  <li><a href="{{ url_for('login_page') }}">Login</a></li>
+                  {% endif %}
+                </ul>
+              </div>
             </div>
-          </div>
-          <div class="col-lg-6">
-            <h4 class="footer-title">Get in Touch</h4>
-            <ul class="footer-contact">
-              <li>
-                <i class="material-icons">location_on</i>
-                <span>CommunitySafety.org</span>
-              </li>
-              <li>
-                <i class="material-icons">phone</i> <span>555-123-4567</span>
-              </li>
-              <li>
-                <i class="material-icons">email</i>
-                <span>info@communitysafety.org</span>
-              </li>
-            </ul>
+
+            <!-- Resources Column -->
+            <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+              <div class="footer-column">
+                <h4 class="footer-title">Resources</h4>
+                <ul class="footer-nav">
+                  <li><a href="#">Safety Tips</a></li>
+                  <li><a href="#">Community Guidelines</a></li>
+                  <li><a href="#">Help Center</a></li>
+                  <li><a href="#">API Documentation</a></li>
+                  <li><a href="#">Data & Analytics</a></li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Contact & Newsletter Column -->
+            <div class="col-lg-4 col-md-6">
+              <div class="footer-column">
+                <h4 class="footer-title">Stay Connected</h4>
+                <div class="footer-contact mb-4">
+                  <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>CommunitySafety.org</span>
+                  </div>
+                  <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <span>555-123-4567</span>
+                  </div>
+                  <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>info@communitysafety.org</span>
+                  </div>
+                </div>
+
+                <!-- Newsletter Signup -->
+                <div class="newsletter-signup">
+                  <h5 class="newsletter-title">Get Safety Updates</h5>
+                  <p class="newsletter-description">
+                    Subscribe to receive important community safety updates and
+                    notifications.
+                  </p>
+                  <form class="newsletter-form">
+                    <div class="input-group">
+                      <input
+                        type="email"
+                        class="form-control newsletter-input"
+                        placeholder="Enter your email"
+                        required
+                      />
+                      <button
+                        class="btn btn-primary newsletter-btn"
+                        type="submit"
+                      >
+                        <i class="fas fa-paper-plane"></i>
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+
+        <!-- Partnership Badges -->
+        <div class="footer-partnerships">
+          <div class="row align-items-center">
+            <div class="col-md-6">
+              <p class="partnerships-title">
+                Trusted by communities nationwide
+              </p>
+            </div>
+            <div class="col-md-6">
+              <div class="partnership-badges">
+                <div class="badge-item">
+                  <i class="fas fa-shield-alt"></i>
+                  <span>Security Verified</span>
+                </div>
+                <div class="badge-item">
+                  <i class="fas fa-users"></i>
+                  <span>Community Approved</span>
+                </div>
+                <div class="badge-item">
+                  <i class="fas fa-award"></i>
+                  <span>Safety Excellence</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer Bottom -->
         <div class="footer-bottom">
           <div class="row align-items-center">
             <div class="col-md-6 mb-3 mb-md-0">
-              <p class="mb-0">
-                ©{{ now.year }} Community Safety. All Rights Reserved
+              <p class="copyright">
+                ©{{ now.year }} Community Safety. All Rights Reserved.
               </p>
-              <!-- Dynamic Year -->
             </div>
-            <div class="col-md-6 text-md-end">
-              <ul class="footer-links">
+            <div class="col-md-6">
+              <ul class="footer-legal">
                 <li>
                   <a href="{{ url_for('privacy_policy') }}">Privacy Policy</a>
                 </li>
                 <li>
                   <a href="{{ url_for('terms_service') }}">Terms of Service</a>
                 </li>
-                <li><a href="#">Sitemap</a></li>
+                <li><a href="#">Cookie Policy</a></li>
+                <li><a href="#">Accessibility</a></li>
               </ul>
             </div>
           </div>
