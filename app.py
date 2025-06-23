@@ -504,18 +504,32 @@ def camera_register_page():
         form.contact_email.data = current_user.email
 
     if form.validate_on_submit():
+        # Safely convert latitude/longitude strings to float or None
+        lat_raw = form.camera_latitude.data
+        lng_raw = form.camera_longitude.data
+        try:
+            lat_value = float(lat_raw) if lat_raw not in (None, "", "null") else None
+        except ValueError:
+            lat_value = None
+        try:
+            lng_value = float(lng_raw) if lng_raw not in (None, "", "null") else None
+        except ValueError:
+            lng_value = None
+
         new_camera = Camera(
             owner_id=current_user.id,
             address=form.address.data,
-            latitude=form.camera_latitude.data,
-            longitude=form.camera_longitude.data,
+            latitude=lat_value,
+            longitude=lng_value,
             camera_name=form.camera_name.data,
             camera_type=form.camera_type.data,
             camera_brand=form.camera_brand.data,
             recording_type=form.recording_type.data,
             coverage_description=form.coverage_description.data,
             retention_period=form.retention_period.data,
-            contact_preference=form.contact_preference.data,
+            contact_preference=(
+                form.contact_preference.data if form.contact_preference.data else None
+            ),
             is_verified=False,  # Default to not verified
         )
         db.session.add(new_camera)

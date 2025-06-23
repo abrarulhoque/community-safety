@@ -1,165 +1,631 @@
 {% extends "base.html" %} {% block head_extra %}
 <!-- Custom styles for this page -->
 <style>
-  /* Timeline styling */
-  .timeline {
+  /* Profile Page Styling */
+  .profile-hero-section {
+    background: var(--gradient-primary);
     position: relative;
-    padding-left: 30px;
+    overflow: hidden;
+    padding-top: 100px;
+    padding-bottom: 40px;
   }
 
-  .timeline:before {
+  .profile-hero-section::before {
     content: '';
     position: absolute;
     top: 0;
-    left: 15px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('/static/images/map_background.jpg') center/cover;
+    opacity: 0.1;
+    z-index: 1;
+  }
+
+  .profile-hero-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .profile-avatar {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(
+      135deg,
+      var(--accent-color),
+      var(--accent-light)
+    );
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    font-weight: 700;
+    color: white;
+    margin: 0 auto 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    position: relative;
+    transition: var(--transition);
+  }
+
+  .profile-avatar::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    background: linear-gradient(
+      135deg,
+      var(--accent-color),
+      var(--secondary-color)
+    );
+    border-radius: 50%;
+    z-index: -1;
+    opacity: 0;
+    transition: var(--transition);
+  }
+
+  .profile-avatar:hover::before {
+    opacity: 1;
+  }
+
+  .avatar-edit-btn {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--secondary-color);
+    border: 3px solid white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    cursor: pointer;
+  }
+
+  .avatar-edit-btn:hover {
+    background: var(--secondary-dark);
+    transform: scale(1.1);
+  }
+
+  .profile-header-info h2 {
+    color: white;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .profile-badge {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .profile-stats {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1.5rem;
+  }
+
+  .profile-stat {
+    text-align: center;
+    color: white;
+  }
+
+  .profile-stat-number {
+    font-size: 1.8rem;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  .profile-stat-label {
+    font-size: 0.9rem;
+    opacity: 0.9;
+  }
+
+  .profile-content-section {
+    background: var(--bg-light);
+    padding: 60px 0;
+    margin-top: -40px;
+    position: relative;
+    z-index: 3;
+  }
+
+  .profile-sidebar {
+    position: sticky;
+    top: 120px;
+  }
+
+  .profile-nav {
+    background: white;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    border: none;
+  }
+
+  .profile-nav-item {
+    border: none;
+    transition: var(--transition);
+    position: relative;
+  }
+
+  .profile-nav-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: var(--gradient-primary);
+    transform: scaleY(0);
+    transition: var(--transition);
+  }
+
+  .profile-nav-item.active::before,
+  .profile-nav-item:hover::before {
+    transform: scaleY(1);
+  }
+
+  .profile-nav-item.active {
+    background: linear-gradient(90deg, rgba(26, 54, 93, 0.05), transparent);
+    color: var(--primary-color);
+    font-weight: 600;
+  }
+
+  .profile-nav-item:hover {
+    background: rgba(26, 54, 93, 0.02);
+    transform: translateX(2px);
+  }
+
+  .profile-nav-item .material-icons {
+    margin-right: 12px;
+    font-size: 20px;
+  }
+
+  .profile-card {
+    background: white;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+    border: none;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    transition: var(--transition);
+  }
+
+  .profile-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+  }
+
+  .profile-card-header {
+    background: linear-gradient(
+      135deg,
+      var(--primary-color),
+      var(--primary-light)
+    );
+    color: white;
+    padding: 1.5rem;
+    border-bottom: none;
+  }
+
+  .profile-card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .profile-card-body {
+    padding: 2rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .form-label {
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .form-control {
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 12px 16px;
+    font-size: 0.95rem;
+    transition: var(--transition);
+    background: var(--bg-white);
+  }
+
+  .form-control:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 0.2rem rgba(49, 130, 206, 0.25);
+  }
+
+  .form-control:disabled {
+    background: var(--bg-gray);
+    color: var(--text-medium);
+    opacity: 1;
+  }
+
+  .edit-btn {
+    background: linear-gradient(
+      135deg,
+      var(--accent-color),
+      var(--accent-light)
+    );
+    border: none;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: var(--transition);
+  }
+
+  .edit-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(237, 137, 54, 0.4);
+    color: white;
+  }
+
+  /* Timeline Styling */
+  .timeline {
+    position: relative;
+    padding-left: 40px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20px;
     height: 100%;
-    width: 2px;
-    background-color: #e9e9e9;
+    width: 3px;
+    background: linear-gradient(
+      to bottom,
+      var(--secondary-color),
+      var(--accent-color)
+    );
+    border-radius: 2px;
   }
 
   .timeline-item {
-    margin-bottom: 25px;
+    margin-bottom: 2rem;
     position: relative;
   }
 
   .timeline-marker {
     position: absolute;
-    left: -30px;
-    width: 30px;
-    height: 30px;
+    left: -40px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
+    border: 3px solid white;
+    box-shadow: var(--shadow);
+    z-index: 2;
+  }
+
+  .timeline-marker.bg-primary {
+    background: var(--gradient-primary);
+  }
+
+  .timeline-marker.bg-success {
+    background: linear-gradient(135deg, var(--success-color), #48bb78);
+  }
+
+  .timeline-marker.bg-info {
+    background: linear-gradient(
+      135deg,
+      var(--secondary-color),
+      var(--secondary-light)
+    );
   }
 
   .timeline-content {
-    padding-left: 10px;
+    background: white;
+    padding: 1.5rem;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--secondary-color);
+    transition: var(--transition);
   }
 
-  /* List group active color */
-  .list-group-item.active {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
+  .timeline-content:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateX(4px);
+  }
+
+  .timeline-content h6 {
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .timeline-content p {
+    margin-bottom: 0.25rem;
+  }
+
+  .timeline-date {
+    color: var(--text-light);
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+
+  /* Checkbox Styling */
+  .form-check-input {
+    border: 2px solid var(--border-color);
+    border-radius: 4px;
+    width: 1.2em;
+    height: 1.2em;
+  }
+
+  .form-check-input:checked {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+  }
+
+  .form-check-label {
+    color: var(--text-dark);
+    font-weight: 500;
+    margin-left: 0.5rem;
+  }
+
+  .notification-group {
+    background: var(--bg-light);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 1.5rem;
+  }
+
+  .notification-group-title {
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+  }
+
+  /* Action Buttons */
+  .profile-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .btn-change-password {
+    background: var(--gradient-primary);
+    border: none;
+    color: white;
+    padding: 12px 24px;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    transition: var(--transition);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-change-password:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(26, 54, 93, 0.4);
+    color: white;
+  }
+
+  /* Responsive */
+  @media (max-width: 992px) {
+    .profile-stats {
+      justify-content: center;
+      gap: 1.5rem;
+    }
+
+    .profile-sidebar {
+      position: static;
+      margin-bottom: 2rem;
+    }
+
+    .profile-content-section {
+      margin-top: -20px;
+      padding: 40px 0;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .profile-header-info h2 {
+      font-size: 2rem;
+    }
+
+    .profile-stats {
+      gap: 1rem;
+    }
+
+    .profile-stat-number {
+      font-size: 1.5rem;
+    }
+
+    .timeline {
+      padding-left: 30px;
+    }
+
+    .timeline-marker {
+      left: -30px;
+      width: 30px;
+      height: 30px;
+    }
+
+    .profile-actions {
+      flex-direction: column;
+    }
   }
 </style>
 {% endblock %} {% block content %}
-<!-- Profile Section -->
-<section class="py-5 mt-5 bg-light">
-  <div class="container py-5">
-    <div class="row">
-      <div class="col-lg-3 mb-4">
-        <div class="card border-0 shadow-sm">
-          <div class="card-body text-center">
-            <div
-              class="position-relative mb-3 mx-auto"
-              style="width: 120px; height: 120px"
-            >
-              <div
-                class="rounded-circle w-100 h-100 d-flex justify-content-center align-items-center"
-                style="
-                  background-color: #1a3a6e;
-                  color: white;
-                  font-size: 40px;
-                  font-weight: bold;
-                "
-              >
-                {{ user.first_name[0] }}{{ user.last_name[0] }}
-              </div>
-              <button
-                class="btn btn-sm btn-primary position-absolute bottom-0 end-0 rounded-circle"
-              >
-                <i class="material-icons small">edit</i>
-              </button>
-            </div>
-            <h5 class="mb-1">{{ user.first_name }} {{ user.last_name }}</h5>
-            <p class="text-muted small">{{ user.account_type }}</p>
-            <div class="d-grid gap-2">
-              <a href="#" class="btn btn-outline-primary btn-sm"
-                >Change Password</a
+<!-- Profile Hero Section -->
+<section class="profile-hero-section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 text-center">
+        <div class="profile-hero-content">
+          <div class="profile-avatar">
+            {{ user.first_name[0] }}{{ user.last_name[0] }}
+            <div class="avatar-edit-btn">
+              <i class="material-icons" style="font-size: 18px; color: white"
+                >edit</i
               >
             </div>
           </div>
-        </div>
-        <div class="list-group mt-4 shadow-sm">
-          <a
-            href="#personal-info"
-            class="list-group-item list-group-item-action active"
-          >
-            Personal Information
-          </a>
-          <a
-            href="#contact-preferences"
-            class="list-group-item list-group-item-action"
-          >
-            Contact Preferences
-          </a>
-          <a
-            href="#address-info"
-            class="list-group-item list-group-item-action"
-          >
-            Address Information
-          </a>
-          <a
-            href="#activity-history"
-            class="list-group-item list-group-item-action"
-          >
-            Activity History
-          </a>
+          <div class="profile-header-info">
+            <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+            <div class="profile-badge">{{ user.account_type }}</div>
+            <div class="profile-stats">
+              <div class="profile-stat">
+                <span class="profile-stat-number">{{
+                  user.incidents.count()
+                }}</span>
+                <span class="profile-stat-label">Reports Filed</span>
+              </div>
+              <div class="profile-stat">
+                <span class="profile-stat-number">{{
+                  user.cameras.count()
+                }}</span>
+                <span class="profile-stat-label">Cameras Registered</span>
+              </div>
+              <div class="profile-stat">
+                <span class="profile-stat-number">{{
+                  (user.registered_on.now() - user.registered_on).days
+                }}</span>
+                <span class="profile-stat-label">Days Active</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- Profile Content Section -->
+<section class="profile-content-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3 mb-4">
+        <div class="profile-sidebar">
+          <div class="list-group profile-nav">
+            <a
+              href="#personal-info"
+              class="list-group-item list-group-item-action profile-nav-item active"
+            >
+              <i class="material-icons">person</i>
+              Personal Information
+            </a>
+            <a
+              href="#contact-preferences"
+              class="list-group-item list-group-item-action profile-nav-item"
+            >
+              <i class="material-icons">notifications</i>
+              Contact Preferences
+            </a>
+            <a
+              href="#address-info"
+              class="list-group-item list-group-item-action profile-nav-item"
+            >
+              <i class="material-icons">location_on</i>
+              Address Information
+            </a>
+            <a
+              href="#activity-history"
+              class="list-group-item list-group-item-action profile-nav-item"
+            >
+              <i class="material-icons">history</i>
+              Activity History
+            </a>
+          </div>
+
+          <div class="profile-actions mt-4">
+            <a href="#" class="btn-change-password">
+              <i class="material-icons" style="font-size: 18px">lock</i>
+              Change Password
+            </a>
+          </div>
+        </div>
+      </div>
+
       <div class="col-lg-9">
         <!-- Personal Information -->
-        <div id="personal-info" class="card border-0 shadow-sm mb-4">
-          <div class="card-header bg-white py-3">
+        <div id="personal-info" class="profile-card">
+          <div class="profile-card-header">
             <div class="d-flex justify-content-between align-items-center">
-              <h5 class="mb-0">Personal Information</h5>
-              <button class="btn btn-sm btn-outline-primary">Edit</button>
+              <h5 class="profile-card-title">
+                <i class="material-icons">person</i>
+                Personal Information
+              </h5>
+              <button class="edit-btn">Edit</button>
             </div>
           </div>
-          <div class="card-body">
+          <div class="profile-card-body">
             <form>
-              <div class="row mb-3">
-                <div class="col-md-6 mb-3 mb-md-0">
-                  <label class="form-label">First Name</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    value="{{ user.first_name }}"
-                    disabled
-                  />
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-label">First Name</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      value="{{ user.first_name }}"
+                      disabled
+                    />
+                  </div>
                 </div>
                 <div class="col-md-6">
-                  <label class="form-label">Last Name</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    value="{{ user.last_name }}"
-                    disabled
-                  />
+                  <div class="form-group">
+                    <label class="form-label">Last Name</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      value="{{ user.last_name }}"
+                      disabled
+                    />
+                  </div>
                 </div>
               </div>
-              <div class="row mb-3">
-                <div class="col-md-6 mb-3 mb-md-0">
-                  <label class="form-label">Email Address</label>
-                  <input
-                    type="email"
-                    class="form-control"
-                    value="{{ user.email }}"
-                    disabled
-                  />
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input
+                      type="email"
+                      class="form-control"
+                      value="{{ user.email }}"
+                      disabled
+                    />
+                  </div>
                 </div>
                 <div class="col-md-6">
-                  <label class="form-label">Phone Number</label>
-                  <input
-                    type="tel"
-                    class="form-control"
-                    value="{{ user.phone_number if user.phone_number else 'Not provided' }}"
-                    disabled
-                  />
+                  <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    <input
+                      type="tel"
+                      class="form-control"
+                      value="{{ user.phone_number if user.phone_number else 'Not provided' }}"
+                      disabled
+                    />
+                  </div>
                 </div>
               </div>
-              <div class="mb-3">
+              <div class="form-group">
                 <label class="form-label">Account Type</label>
                 <input
                   type="text"
@@ -173,18 +639,21 @@
         </div>
 
         <!-- Contact Preferences -->
-        <div id="contact-preferences" class="card border-0 shadow-sm mb-4">
-          <div class="card-header bg-white py-3">
+        <div id="contact-preferences" class="profile-card">
+          <div class="profile-card-header">
             <div class="d-flex justify-content-between align-items-center">
-              <h5 class="mb-0">Contact Preferences</h5>
-              <button class="btn btn-sm btn-outline-primary">Edit</button>
+              <h5 class="profile-card-title">
+                <i class="material-icons">notifications</i>
+                Contact Preferences
+              </h5>
+              <button class="edit-btn">Edit</button>
             </div>
           </div>
-          <div class="card-body">
+          <div class="profile-card-body">
             <form>
-              <div class="mb-3">
-                <label class="form-label">Notification Methods</label>
-                <div class="form-check mb-2">
+              <div class="notification-group">
+                <div class="notification-group-title">Notification Methods</div>
+                <div class="form-check mb-3">
                   <input
                     class="form-check-input"
                     type="checkbox"
@@ -192,11 +661,11 @@
                     checked
                     disabled
                   />
-                  <label class="form-check-label" for="emailNotif">
-                    Email Notifications
-                  </label>
+                  <label class="form-check-label" for="emailNotif"
+                    >Email Notifications</label
+                  >
                 </div>
-                <div class="form-check mb-2">
+                <div class="form-check mb-3">
                   <input
                     class="form-check-input"
                     type="checkbox"
@@ -204,11 +673,11 @@
                     checked
                     disabled
                   />
-                  <label class="form-check-label" for="smsNotif">
-                    SMS Notifications
-                  </label>
+                  <label class="form-check-label" for="smsNotif"
+                    >SMS Notifications</label
+                  >
                 </div>
-                <div class="form-check">
+                <div class="form-check mb-3">
                   <input
                     class="form-check-input"
                     type="checkbox"
@@ -216,14 +685,17 @@
                     checked
                     disabled
                   />
-                  <label class="form-check-label" for="appNotif">
-                    In-app Notifications
-                  </label>
+                  <label class="form-check-label" for="appNotif"
+                    >In-app Notifications</label
+                  >
                 </div>
               </div>
-              <div class="mb-3">
-                <label class="form-label">Notification Preferences</label>
-                <div class="form-check mb-2">
+
+              <div class="notification-group">
+                <div class="notification-group-title">
+                  Notification Preferences
+                </div>
+                <div class="form-check mb-3">
                   <input
                     class="form-check-input"
                     type="checkbox"
@@ -231,11 +703,11 @@
                     checked
                     disabled
                   />
-                  <label class="form-check-label" for="incidentNotif">
-                    New incidents in my area
-                  </label>
+                  <label class="form-check-label" for="incidentNotif"
+                    >New incidents in my area</label
+                  >
                 </div>
-                <div class="form-check mb-2">
+                <div class="form-check mb-3">
                   <input
                     class="form-check-input"
                     type="checkbox"
@@ -243,11 +715,11 @@
                     checked
                     disabled
                   />
-                  <label class="form-check-label" for="updateNotif">
-                    Updates on reported incidents
-                  </label>
+                  <label class="form-check-label" for="updateNotif"
+                    >Updates on reported incidents</label
+                  >
                 </div>
-                <div class="form-check mb-2">
+                <div class="form-check mb-3">
                   <input
                     class="form-check-input"
                     type="checkbox"
@@ -255,20 +727,20 @@
                     checked
                     disabled
                   />
-                  <label class="form-check-label" for="alertNotif">
-                    Community safety alerts
-                  </label>
+                  <label class="form-check-label" for="alertNotif"
+                    >Community safety alerts</label
+                  >
                 </div>
-                <div class="form-check">
+                <div class="form-check mb-3">
                   <input
                     class="form-check-input"
                     type="checkbox"
                     id="newsNotif"
                     disabled
                   />
-                  <label class="form-check-label" for="newsNotif">
-                    Community news and updates
-                  </label>
+                  <label class="form-check-label" for="newsNotif"
+                    >Community news and updates</label
+                  >
                 </div>
               </div>
             </form>
@@ -276,16 +748,19 @@
         </div>
 
         <!-- Address Information -->
-        <div id="address-info" class="card border-0 shadow-sm mb-4">
-          <div class="card-header bg-white py-3">
+        <div id="address-info" class="profile-card">
+          <div class="profile-card-header">
             <div class="d-flex justify-content-between align-items-center">
-              <h5 class="mb-0">Address Information</h5>
-              <button class="btn btn-sm btn-outline-primary">Edit</button>
+              <h5 class="profile-card-title">
+                <i class="material-icons">location_on</i>
+                Address Information
+              </h5>
+              <button class="edit-btn">Edit</button>
             </div>
           </div>
-          <div class="card-body">
+          <div class="profile-card-body">
             <form>
-              <div class="mb-3">
+              <div class="form-group">
                 <label class="form-label">Address</label>
                 <input
                   type="text"
@@ -299,24 +774,31 @@
         </div>
 
         <!-- Activity History -->
-        <div id="activity-history" class="card border-0 shadow-sm">
-          <div class="card-header bg-white py-3">
-            <h5 class="mb-0">Activity History</h5>
+        <div id="activity-history" class="profile-card">
+          <div class="profile-card-header">
+            <h5 class="profile-card-title">
+              <i class="material-icons">history</i>
+              Activity History
+            </h5>
           </div>
-          <div class="card-body">
+          <div class="profile-card-body">
             <div class="timeline">
               {% if user.incidents.count() > 0 %}
               <div class="timeline-item">
                 <div class="timeline-marker bg-primary">
-                  <i class="material-icons small text-white">report_problem</i>
+                  <i
+                    class="material-icons"
+                    style="font-size: 18px; color: white"
+                    >report_problem</i
+                  >
                 </div>
                 <div class="timeline-content">
-                  <h6 class="mb-0">Reported an Incident</h6>
-                  <p class="text-muted small mb-0">
+                  <h6>Reported an Incident</h6>
+                  <p class="text-muted mb-1">
                     {{ user.incidents[0].incident_type }} at
                     {{ user.incidents[0].location_address }}
                   </p>
-                  <p class="text-muted small">
+                  <p class="timeline-date">
                     {{ user.incidents[0].reported_on.strftime('%B %d, %Y') }}
                   </p>
                 </div>
@@ -324,14 +806,18 @@
               {% endif %} {% if user.cameras.count() > 0 %}
               <div class="timeline-item">
                 <div class="timeline-marker bg-success">
-                  <i class="material-icons small text-white">videocam</i>
+                  <i
+                    class="material-icons"
+                    style="font-size: 18px; color: white"
+                    >videocam</i
+                  >
                 </div>
                 <div class="timeline-content">
-                  <h6 class="mb-0">Registered a Camera</h6>
-                  <p class="text-muted small mb-0">
+                  <h6>Registered a Camera</h6>
+                  <p class="text-muted mb-1">
                     {{ user.cameras[0].camera_name if user.cameras[0].camera_name else 'Security camera' }}
                   </p>
-                  <p class="text-muted small">
+                  <p class="timeline-date">
                     {{ user.cameras[0].registered_on.strftime('%B %d, %Y') }}
                   </p>
                 </div>
@@ -340,14 +826,16 @@
 
               <div class="timeline-item">
                 <div class="timeline-marker bg-info">
-                  <i class="material-icons small text-white">person</i>
+                  <i
+                    class="material-icons"
+                    style="font-size: 18px; color: white"
+                    >person_add</i
+                  >
                 </div>
                 <div class="timeline-content">
-                  <h6 class="mb-0">Account Created</h6>
-                  <p class="text-muted small mb-0">
-                    Welcome to Community Safety!
-                  </p>
-                  <p class="text-muted small">
+                  <h6>Account Created</h6>
+                  <p class="text-muted mb-1">Welcome to Community Safety!</p>
+                  <p class="timeline-date">
                     {{ user.registered_on.strftime('%B %d, %Y') }}
                   </p>
                 </div>
@@ -359,4 +847,52 @@
     </div>
   </div>
 </section>
+
+<script>
+  // Smooth scrolling for navigation links
+  document.querySelectorAll('.profile-nav-item').forEach(link => {
+    link.addEventListener('click', function (e) {
+      e.preventDefault()
+
+      // Remove active class from all nav items
+      document.querySelectorAll('.profile-nav-item').forEach(item => {
+        item.classList.remove('active')
+      })
+
+      // Add active class to clicked item
+      this.classList.add('active')
+
+      // Smooth scroll to target section
+      const targetId = this.getAttribute('href')
+      const targetSection = document.querySelector(targetId)
+      if (targetSection) {
+        targetSection.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        })
+      }
+    })
+  })
+
+  // Update active nav item on scroll
+  window.addEventListener('scroll', function () {
+    const sections = document.querySelectorAll('.profile-card')
+    const navItems = document.querySelectorAll('.profile-nav-item')
+
+    let current = ''
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop - 150
+      if (window.pageYOffset >= sectionTop) {
+        current = section.getAttribute('id')
+      }
+    })
+
+    navItems.forEach(item => {
+      item.classList.remove('active')
+      if (item.getAttribute('href') === '#' + current) {
+        item.classList.add('active')
+      }
+    })
+  })
+</script>
 {% endblock %}
