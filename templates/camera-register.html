@@ -203,30 +203,31 @@
                     </div>
 
                     <div class="mb-3">
-                      {{ form.coverage_area_description.label(class="form-label") }}
-                      {% if form.coverage_area_description.errors %}
-                      {{ form.coverage_area_description(class="form-control is-invalid") }}
+                      {{ form.coverage_description.label(class="form-label") }}
+                      {% if form.coverage_description.errors %}
+                      {{ form.coverage_description(class="form-control is-invalid") }}
                       <div class="invalid-feedback">
-                        {% for error in form.coverage_area_description.errors
-                        %}<span>{{ error }}</span
+                        {% for error in form.coverage_description.errors %}<span
+                          >{{ error }}</span
                         >{% endfor %}
                       </div>
                       {% else %}
-                      {{ form.coverage_area_description(class="form-control") }}
+                      {{ form.coverage_description(class="form-control") }}
                       {% endif %}
                     </div>
 
                     <div class="mb-3">
-                      {{ form.footage_retention_period.label(class="form-label") }}
-                      {% if form.footage_retention_period.errors %}
-                      {{ form.footage_retention_period(class="form-select is-invalid") }}
+                      {{ form.retention_period.label(class="form-label") }}
+                      {% if form.retention_period.errors %}
+                      {{ form.retention_period(class="form-select is-invalid") }}
                       <div class="invalid-feedback">
-                        {% for error in form.footage_retention_period.errors
-                        %}<span>{{ error }}</span
+                        {% for error in form.retention_period.errors %}<span>{{
+                          error
+                        }}</span
                         >{% endfor %}
                       </div>
                       {% else %}
-                      {{ form.footage_retention_period(class="form-select") }}
+                      {{ form.retention_period(class="form-select") }}
                       {% endif %}
                     </div>
                   </div>
@@ -273,21 +274,21 @@
                     </div>
 
                     <div class="mb-3">
-                      {{ form.alternative_contact_method.label(class="form-label") }}
-                      {{ form.alternative_contact_method(class="form-control") }}
+                      {{ form.alt_contact.label(class="form-label") }}
+                      {{ form.alt_contact(class="form-control") }}
                     </div>
 
                     <div class="mb-3">
-                      {{ form.preferred_contact_hours.label(class="form-label") }}
-                      {% if form.preferred_contact_hours.errors %}
-                      {{ form.preferred_contact_hours(class="form-select is-invalid") }}
+                      {{ form.contact_preference.label(class="form-label") }}
+                      {% if form.contact_preference.errors %}
+                      {{ form.contact_preference(class="form-select is-invalid") }}
                       <div class="invalid-feedback">
-                        {% for error in form.preferred_contact_hours.errors
-                        %}<span>{{ error }}</span
+                        {% for error in form.contact_preference.errors %}<span
+                          >{{ error }}</span
                         >{% endfor %}
                       </div>
                       {% else %}
-                      {{ form.preferred_contact_hours(class="form-select") }}
+                      {{ form.contact_preference(class="form-select") }}
                       {% endif %}
                     </div>
                   </div>

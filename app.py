@@ -331,6 +331,8 @@ class CameraRegistrationForm(FlaskForm):
         "I agree to the Privacy Policy and Terms of Service",
         validators=[DataRequired()],
     )
+    owner_name = StringField("Owner Name", validators=[DataRequired()])
+    contact_email = StringField("Owner Email", validators=[DataRequired(), Email()])
     submit = SubmitField("Register Camera")
 
 
@@ -498,6 +500,8 @@ def camera_register_page():
     # Pre-fill owner info if possible on GET
     if request.method == "GET":
         form.address.data = current_user.address  # Pre-fill address if available
+        form.owner_name.data = current_user.first_name + " " + current_user.last_name
+        form.contact_email.data = current_user.email
 
     if form.validate_on_submit():
         new_camera = Camera(

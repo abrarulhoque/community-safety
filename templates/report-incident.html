@@ -1,37 +1,145 @@
 {% extends "base.html" %} {% block head_extra %}
 <!-- Custom styles for this page -->
 <style>
-  /* Progress steps styling */
+  /* Report Incident Page Styles */
+  .report-hero-section {
+    background: var(--gradient-primary);
+    color: var(--text-white);
+    padding: var(--space-3xl) 0 var(--space-2xl) 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .report-hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="a"><stop offset="0%" stop-color="%23ffffff" stop-opacity="0.1"/><stop offset="100%" stop-color="%23ffffff" stop-opacity="0"/></radialGradient></defs><circle cx="20%" cy="30%" r="300" fill="url(%23a)"/><circle cx="80%" cy="70%" r="400" fill="url(%23a)"/></svg>');
+    opacity: 0.3;
+  }
+
+  .report-hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+  }
+
+  .report-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-lg);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50px;
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    margin-bottom: var(--space-lg);
+    backdrop-filter: blur(10px);
+  }
+
+  .report-title {
+    font-size: var(--font-size-4xl);
+    font-weight: 800;
+    margin-bottom: var(--space-md);
+    line-height: var(--line-height-tight);
+  }
+
+  .report-description {
+    font-size: var(--font-size-lg);
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto var(--space-xl);
+    line-height: var(--line-height-relaxed);
+  }
+
+  /* Progress Bar Redesign */
+  .progress-container {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius-xl);
+    padding: var(--space-xl);
+    margin-bottom: var(--space-xl);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .progress-track {
+    position: relative;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+    margin: var(--space-lg) 0;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--gradient-accent);
+    border-radius: 3px;
+    transition: var(--transition);
+    width: 33%;
+  }
+
+  .progress-steps {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+  }
+
   .progress-step {
-    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 2;
   }
 
   .progress-circle {
-    width: 30px;
-    height: 30px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
-    background-color: #e9e9e9;
-    color: #666;
+    background: rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.6);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 600;
+    font-weight: 700;
+    font-size: var(--font-size-lg);
+    transition: var(--transition);
+    margin-bottom: var(--space-sm);
+    border: 2px solid rgba(255, 255, 255, 0.3);
   }
 
   .progress-step.active .progress-circle {
-    background-color: var(--primary-color);
-    color: white;
+    background: var(--gradient-accent);
+    color: var(--text-white);
+    border-color: var(--accent-color);
+    box-shadow: 0 8px 25px rgba(237, 137, 54, 0.3);
   }
 
   .progress-label {
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: #666;
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.6);
+    transition: var(--transition);
   }
 
   .progress-step.active .progress-label {
-    color: var(--primary-color);
-    font-weight: 600;
+    color: var(--text-white);
+  }
+
+  /* Form Section */
+  .report-form-section {
+    padding: var(--space-3xl) 0;
+    background: var(--bg-light);
+    position: relative;
+  }
+
+  .form-container {
+    max-width: 900px;
+    margin: 0 auto;
   }
 
   /* Hide all steps by default */
@@ -42,168 +150,500 @@
   /* Show active step */
   .report-step.active {
     display: block;
+    animation: fadeInUp 0.5s ease-out;
   }
 
-  /* Success icon */
+  /* Modern Card Design */
+  .report-card {
+    background: var(--bg-white);
+    border-radius: var(--border-radius-xl);
+    box-shadow: var(--shadow-lg);
+    border: none;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .report-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient-accent);
+  }
+
+  .report-card-header {
+    background: linear-gradient(135deg, var(--bg-white) 0%, #f8fafc 100%);
+    padding: var(--space-xl);
+    border-bottom: 1px solid var(--border-color);
+    position: relative;
+  }
+
+  .report-card-header h4 {
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    color: var(--text-dark);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+  }
+
+  .report-card-header .step-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--gradient-accent);
+    color: var(--text-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+  }
+
+  .report-card-body {
+    padding: var(--space-xl);
+  }
+
+  /* Form Controls */
+  .form-group {
+    margin-bottom: var(--space-xl);
+  }
+
+  .form-label {
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: var(--space-sm);
+    font-size: var(--font-size-sm);
+    display: block;
+  }
+
+  .form-control,
+  .form-select {
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: var(--space-md);
+    font-size: var(--font-size-base);
+    transition: var(--transition);
+    background: var(--bg-white);
+  }
+
+  .form-control:focus,
+  .form-select:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+    outline: none;
+  }
+
+  .form-text {
+    font-size: var(--font-size-xs);
+    color: var(--text-light);
+    margin-top: var(--space-xs);
+  }
+
+  /* Input Groups */
+  .input-group {
+    display: flex;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .input-group .form-control {
+    border-radius: 0;
+    border-right: none;
+  }
+
+  .input-group .btn {
+    border-radius: 0;
+    border-left: none;
+  }
+
+  .input-group .btn:last-child {
+    border-top-right-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+  }
+
+  /* Map Container */
+  .map-container {
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    margin: var(--space-lg) 0;
+  }
+
+  /* File Upload */
+  .file-upload-area {
+    border: 2px dashed var(--border-color);
+    border-radius: var(--border-radius);
+    padding: var(--space-xl);
+    text-align: center;
+    background: var(--bg-light);
+    transition: var(--transition);
+    cursor: pointer;
+  }
+
+  .file-upload-area:hover {
+    border-color: var(--secondary-color);
+    background: rgba(49, 130, 206, 0.05);
+  }
+
+  .file-upload-icon {
+    font-size: 3rem;
+    color: var(--text-light);
+    margin-bottom: var(--space-md);
+  }
+
+  /* Navigation Buttons */
+  .step-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: var(--space-xl);
+    padding-top: var(--space-xl);
+    border-top: 1px solid var(--border-color);
+  }
+
+  .btn-step {
+    padding: var(--space-md) var(--space-xl);
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+  .btn-step:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .btn-step-primary {
+    background: var(--gradient-primary);
+    color: var(--text-white);
+    border: none;
+  }
+
+  .btn-step-secondary {
+    background: transparent;
+    color: var(--text-medium);
+    border: 2px solid var(--border-color);
+  }
+
+  .btn-step-secondary:hover {
+    border-color: var(--secondary-color);
+    color: var(--secondary-color);
+  }
+
+  /* Review Section */
+  .review-item {
+    background: var(--bg-light);
+    border-radius: var(--border-radius);
+    padding: var(--space-lg);
+    margin-bottom: var(--space-lg);
+    border-left: 4px solid var(--secondary-color);
+  }
+
+  .review-label {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--text-medium);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-xs);
+  }
+
+  .review-content {
+    font-size: var(--font-size-base);
+    color: var(--text-dark);
+    margin: 0;
+  }
+
+  /* Success State */
+  .success-container {
+    text-align: center;
+    padding: var(--space-3xl) var(--space-xl);
+  }
+
   .success-icon {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: rgba(56, 161, 105, 0.1);
+    color: var(--success-color);
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background-color: rgba(46, 204, 113, 0.2);
+    font-size: 3rem;
+    margin-bottom: var(--space-xl);
+    animation: pulse 2s infinite;
   }
 
-  .success-icon i {
-    font-size: 48px;
-    color: #2ecc71;
+  .success-title {
+    font-size: var(--font-size-3xl);
+    font-weight: 800;
+    color: var(--text-dark);
+    margin-bottom: var(--space-lg);
+  }
+
+  .success-subtitle {
+    font-size: var(--font-size-lg);
+    color: var(--text-medium);
+    margin-bottom: var(--space-xl);
+  }
+
+  .report-id {
+    display: inline-block;
+    background: var(--gradient-accent);
+    color: var(--text-white);
+    padding: var(--space-sm) var(--space-lg);
+    border-radius: var(--border-radius);
+    font-weight: 700;
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--space-xl);
+  }
+
+  .resource-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+    justify-content: center;
+    margin: var(--space-xl) 0;
+  }
+
+  .resource-link {
+    background: var(--bg-white);
+    border: 2px solid var(--border-color);
+    color: var(--text-medium);
+    padding: var(--space-sm) var(--space-lg);
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-weight: 500;
+  }
+
+  .resource-link:hover {
+    border-color: var(--secondary-color);
+    color: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* Alert Styling */
+  .alert {
+    border-radius: var(--border-radius);
+    border: none;
+    padding: var(--space-lg);
+    margin-bottom: var(--space-lg);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-md);
+  }
+
+  .alert-info {
+    background: rgba(49, 130, 206, 0.1);
+    color: var(--secondary-dark);
+    border-left: 4px solid var(--secondary-color);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .report-title {
+      font-size: var(--font-size-3xl);
+    }
+
+    .progress-circle {
+      width: 40px;
+      height: 40px;
+      font-size: var(--font-size-base);
+    }
+
+    .step-navigation {
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+
+    .resource-links {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
   }
 </style>
 {% endblock %} {% block content %}
-<!-- Report Incident Section -->
-<section class="py-5 mt-5">
-  <div class="container py-4">
-    <div class="row justify-content-center">
-      <div class="col-lg-10">
-        <div class="mb-5 text-center">
-          <h1 class="h2 mb-3">Report an Incident</h1>
-          <p class="text-muted">
-            Follow these simple steps to report an incident in your
-            neighborhood.
-          </p>
-        </div>
+<!-- Hero Section -->
+<section class="report-hero-section">
+  <div class="container">
+    <div class="report-hero-content">
+      <span class="report-badge">
+        <i class="material-icons">report_problem</i>
+        Incident Reporting
+      </span>
+      <h1 class="report-title">
+        Report a <span class="gradient-text">Community Incident</span>
+      </h1>
+      <p class="report-description">
+        Help keep your neighborhood safe by reporting incidents quickly and
+        securely. Our streamlined process ensures your report reaches the right
+        people immediately.
+      </p>
 
-        <!-- Progress Bar -->
-        <div class="position-relative mb-5">
-          <div class="progress" style="height: 4px">
-            <div
-              class="progress-bar"
-              role="progressbar"
-              id="reportProgress"
-              style="width: 33%"
-              aria-valuenow="33"
-              aria-valuemin="0"
-              aria-valuemax="100"
-            ></div>
+      <!-- Progress Bar -->
+      <div class="progress-container">
+        <div class="progress-steps">
+          <div class="progress-step active">
+            <div class="progress-circle">1</div>
+            <span class="progress-label">Location</span>
           </div>
-          <div class="position-absolute" style="top: -10px; left: 0%">
-            <div
-              class="progress-step active d-flex flex-column align-items-center"
-            >
-              <span class="progress-circle">1</span>
-              <span class="progress-label mt-2">Location</span>
-            </div>
+          <div class="progress-step">
+            <div class="progress-circle">2</div>
+            <span class="progress-label">Details</span>
           </div>
-          <div class="position-absolute" style="top: -10px; left: 50%">
-            <div class="progress-step d-flex flex-column align-items-center">
-              <span class="progress-circle">2</span>
-              <span class="progress-label mt-2">Details</span>
-            </div>
-          </div>
-          <div class="position-absolute" style="top: -10px; left: 100%">
-            <div class="progress-step d-flex flex-column align-items-center">
-              <span class="progress-circle">3</span>
-              <span class="progress-label mt-2">Confirmation</span>
-            </div>
+          <div class="progress-step">
+            <div class="progress-circle">3</div>
+            <span class="progress-label">Review</span>
           </div>
         </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="reportProgress"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-        <form
-          method="POST"
-          action="{{ url_for('report_incident_page') }}"
-          id="reportForm"
-        >
-          {{ form.hidden_tag() }}
-          <!-- Hidden fields for latitude and longitude -->
-          <input
-            type="hidden"
-            id="incident_latitude"
-            name="incident_latitude"
-          />
-          <input
-            type="hidden"
-            id="incident_longitude"
-            name="incident_longitude"
-          />
+<!-- Form Section -->
+<section class="report-form-section">
+  <div class="container">
+    <div class="form-container">
+      <form
+        method="POST"
+        action="{{ url_for('report_incident_page') }}"
+        id="reportForm"
+      >
+        {{ form.hidden_tag() }}
+        <!-- Hidden fields for latitude and longitude -->
+        <input type="hidden" id="incident_latitude" name="incident_latitude" />
+        <input
+          type="hidden"
+          id="incident_longitude"
+          name="incident_longitude"
+        />
 
-          <!-- Step 1: Location -->
-          <div id="step1" class="report-step active">
-            <div class="card shadow-sm border-0">
-              <div class="card-header bg-white py-3">
-                <h4 class="mb-0">Step 1: Select Location</h4>
-              </div>
-              <div class="card-body">
-                <div class="mb-4">
-                  <div class="input-group">
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="location_address"
-                      name="location_address"
-                      placeholder="Search for an address..."
-                    />
-                    <button class="btn btn-outline-secondary" type="button">
-                      <i class="material-icons small">search</i>
-                    </button>
-                    <button
-                      class="btn btn-outline-primary"
-                      type="button"
-                      id="use-current-location"
-                      title="Use current location"
-                    >
-                      <i class="material-icons small">my_location</i>
-                    </button>
-                  </div>
-                  <div class="form-text text-muted">
-                    Enter an address or use your current location
-                  </div>
-                </div>
-
-                <div class="mb-4">
-                  <div
-                    id="incidentReportMap"
-                    style="height: 400px; width: 100%"
-                  ></div>
-                </div>
-
-                <div class="mb-3">
-                  {{ form.location_address.label(class="form-label") }}
-                  {% if form.location_address.errors %}
-                  {{ form.location_address(class="form-control is-invalid") }}
-                  <div class="invalid-feedback">
-                    {% for error in form.location_address.errors %}<span>{{
-                      error
-                    }}</span
-                    >{% endfor %}
-                  </div>
-                  {% else %}
-                  {{ form.location_address(class="form-control") }}
-                  {% endif %}
-                </div>
-
-                <div class="text-end">
+        <!-- Step 1: Location -->
+        <div id="step1" class="report-step active">
+          <div class="report-card">
+            <div class="report-card-header">
+              <h4>
+                <span class="step-icon">1</span>
+                Select Incident Location
+              </h4>
+            </div>
+            <div class="report-card-body">
+              <div class="form-group">
+                <label class="form-label">Search Address</label>
+                <div class="input-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="location_address"
+                    name="location_address"
+                    placeholder="Enter street address, landmark, or area..."
+                  />
+                  <button class="btn btn-outline-secondary" type="button">
+                    <i class="material-icons">search</i>
+                  </button>
                   <button
+                    class="btn btn-outline-primary"
                     type="button"
-                    class="btn btn-primary btn-next"
-                    data-next="step2"
+                    id="use-current-location"
+                    title="Use current location"
                   >
-                    Continue to Details
+                    <i class="material-icons">my_location</i>
                   </button>
                 </div>
+                <div class="form-text">
+                  Enter an address or click the location button to use your
+                  current position
+                </div>
+              </div>
+
+              <div class="map-container">
+                <div
+                  id="incidentReportMap"
+                  style="height: 400px; width: 100%"
+                ></div>
+              </div>
+
+              <div class="form-group">
+                {{ form.location_address.label(class="form-label") }}
+                {% if form.location_address.errors %}
+                {{ form.location_address(class="form-control is-invalid") }}
+                <div class="invalid-feedback">
+                  {% for error in form.location_address.errors %}<span>{{
+                    error
+                  }}</span
+                  >{% endfor %}
+                </div>
+                {% else %}
+                {{ form.location_address(class="form-control") }}
+                {% endif %}
+              </div>
+
+              <div class="step-navigation">
+                <div></div>
+                <button
+                  type="button"
+                  class="btn-step btn-step-primary btn-next"
+                  data-next="step2"
+                >
+                  Continue to Details
+                  <i class="material-icons">arrow_forward</i>
+                </button>
               </div>
             </div>
           </div>
+        </div>
 
-          <!-- Step 2: Details -->
-          <div id="step2" class="report-step">
-            <div class="card shadow-sm border-0">
-              <div class="card-header bg-white py-3">
-                <h4 class="mb-0">Step 2: Incident Details</h4>
-              </div>
-              <div class="card-body">
-                <div class="row mb-4">
-                  <div class="col-md-6">
+        <!-- Step 2: Details -->
+        <div id="step2" class="report-step">
+          <div class="report-card">
+            <div class="report-card-header">
+              <h4>
+                <span class="step-icon">2</span>
+                Incident Details
+              </h4>
+            </div>
+            <div class="report-card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
                     {{ form.incident_type.label(class="form-label") }}
                     {% if form.incident_type.errors %}
                     {{ form.incident_type(class="form-select is-invalid") }}
@@ -217,7 +657,9 @@
                     {{ form.incident_type(class="form-select") }}
                     {% endif %}
                   </div>
-                  <div class="col-md-6">
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
                     {{ form.incident_datetime.label(class="form-label") }}
                     {% if form.incident_datetime.errors %}
                     {{ form.incident_datetime(class="form-control is-invalid") }}
@@ -232,40 +674,56 @@
                     {% endif %}
                   </div>
                 </div>
+              </div>
 
-                <div class="mb-4">
-                  {{ form.description.label(class="form-label") }}
-                  {% if form.description.errors %}
-                  {{ form.description(class="form-control is-invalid", rows="5", placeholder="Please provide details about what happened...") }}
-                  <div class="invalid-feedback">
-                    {% for error in form.description.errors %}<span>{{
-                      error
-                    }}</span
-                    >{% endfor %}
-                  </div>
-                  {% else %}
-                  {{ form.description(class="form-control", rows="5", placeholder="Please provide details about what happened...") }}
-                  {% endif %}
+              <div class="form-group">
+                {{ form.description.label(class="form-label") }}
+                {% if form.description.errors %}
+                {{ form.description(class="form-control is-invalid", rows="5", placeholder="Please provide detailed information about what happened, including any relevant circumstances or observations...") }}
+                <div class="invalid-feedback">
+                  {% for error in form.description.errors %}<span>{{
+                    error
+                  }}</span
+                  >{% endfor %}
                 </div>
+                {% else %}
+                {{ form.description(class="form-control", rows="5", placeholder="Please provide detailed information about what happened, including any relevant circumstances or observations...") }}
+                {% endif %}
+              </div>
 
-                <div class="mb-4">
-                  <label class="form-label">Photos/Videos (Optional)</label>
-                  <div class="input-group mb-3">
-                    <input
-                      type="file"
-                      class="form-control"
-                      accept="image/*,video/*"
-                      multiple
-                    />
-                    <label class="input-group-text">Upload</label>
+              <div class="form-group">
+                <label class="form-label">
+                  <i
+                    class="material-icons"
+                    style="vertical-align: middle; margin-right: 8px"
+                    >add_a_photo</i
+                  >
+                  Photos or Videos (Optional)
+                </label>
+                <div class="file-upload-area">
+                  <div class="file-upload-icon">
+                    <i class="material-icons">cloud_upload</i>
                   </div>
-                  <div class="form-text text-muted">
-                    You can upload multiple files (max 5 files, 10MB each)
-                  </div>
+                  <p>
+                    <strong>Drag and drop files here or click to browse</strong>
+                  </p>
+                  <p class="form-text">
+                    Accepted formats: JPG, PNG, MP4, MOV (Max 5 files, 10MB
+                    each)
+                  </p>
+                  <input
+                    type="file"
+                    class="form-control"
+                    accept="image/*,video/*"
+                    multiple
+                    style="display: none"
+                  />
                 </div>
+              </div>
 
-                <div class="row mb-4">
-                  <div class="col-md-6">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
                     <label class="form-label">Your Name</label>
                     <input
                       type="text"
@@ -273,25 +731,29 @@
                       value="John Doe"
                       required
                     />
-                    <div class="form-text text-muted">
-                      Autofilled from your profile
+                    <div class="form-text">
+                      This information is auto-filled from your profile
                     </div>
                   </div>
-                  <div class="col-md-6">
-                    <label class="form-label">Your Contact Information</label>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-label">Contact Information</label>
                     <input
                       type="email"
                       class="form-control"
                       value="john.doe@example.com"
                       required
                     />
-                    <div class="form-text text-muted">
-                      Autofilled from your profile
+                    <div class="form-text">
+                      Your contact information for follow-up if needed
                     </div>
                   </div>
                 </div>
+              </div>
 
-                <div class="mb-4 form-check">
+              <div class="form-group">
+                <div class="form-check">
                   <input
                     class="form-check-input"
                     type="checkbox"
@@ -299,264 +761,172 @@
                     required
                   />
                   <label class="form-check-label" for="privacyCheck">
-                    I understand that this report will be shared with community
-                    safety leaders and local law enforcement
+                    <strong>I understand and agree</strong> that this report
+                    will be shared with community safety leaders and local law
+                    enforcement as appropriate for public safety purposes.
                   </label>
                 </div>
+              </div>
 
-                <div class="d-flex justify-content-between">
-                  <button
-                    type="button"
-                    class="btn btn-outline-secondary btn-prev"
-                    data-prev="step1"
-                  >
-                    Back to Location
-                  </button>
-                  <button
-                    type="button"
-                    class="btn btn-primary btn-next"
-                    data-next="step3"
-                  >
-                    Review and Submit
-                  </button>
-                </div>
+              <div class="step-navigation">
+                <button
+                  type="button"
+                  class="btn-step btn-step-secondary btn-prev"
+                  data-prev="step1"
+                >
+                  <i class="material-icons">arrow_back</i>
+                  Back to Location
+                </button>
+                <button
+                  type="button"
+                  class="btn-step btn-step-primary btn-next"
+                  data-next="step3"
+                >
+                  Review Report
+                  <i class="material-icons">arrow_forward</i>
+                </button>
               </div>
             </div>
           </div>
+        </div>
 
-          <!-- Step 3: Confirmation -->
-          <div id="step3" class="report-step">
-            <div class="card shadow-sm border-0">
-              <div class="card-header bg-white py-3">
-                <h4 class="mb-0">Step 3: Review and Confirm</h4>
-              </div>
-              <div class="card-body">
-                <div class="alert alert-info">
-                  <i class="material-icons small align-middle me-2">info</i>
-                  Please review your incident report before submitting.
+        <!-- Step 3: Review & Confirmation -->
+        <div id="step3" class="report-step">
+          <div class="report-card">
+            <div class="report-card-header">
+              <h4>
+                <span class="step-icon">3</span>
+                Review & Submit Report
+              </h4>
+            </div>
+            <div class="report-card-body">
+              <div class="alert alert-info">
+                <i class="material-icons">info</i>
+                <div>
+                  <strong>Please review your report carefully.</strong>
+                  Once submitted, this information will be processed and shared
+                  with appropriate authorities.
                 </div>
+              </div>
 
-                <div class="row mb-4">
-                  <div class="col-md-6">
-                    <h5 class="h6 text-muted">Location</h5>
-                    <p id="review-location">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="review-item">
+                    <div class="review-label">Incident Location</div>
+                    <p class="review-content" id="review-location">
                       123 Main St, Little Italy, Baltimore, MD 21202
                     </p>
                   </div>
-                  <div class="col-md-6">
-                    <h5 class="h6 text-muted">Date and Time</h5>
-                    <p id="review-datetime">June 15, 2023, 3:45 PM</p>
+                </div>
+                <div class="col-md-6">
+                  <div class="review-item">
+                    <div class="review-label">Date & Time</div>
+                    <p class="review-content" id="review-datetime">
+                      June 15, 2023, 3:45 PM
+                    </p>
                   </div>
                 </div>
+              </div>
 
-                <div class="mb-4">
-                  <h5 class="h6 text-muted">Incident Type</h5>
-                  <p id="review-type">Suspicious Activity</p>
-                </div>
+              <div class="review-item">
+                <div class="review-label">Incident Type</div>
+                <p class="review-content" id="review-type">
+                  Suspicious Activity
+                </p>
+              </div>
 
-                <div class="mb-4">
-                  <h5 class="h6 text-muted">Description</h5>
-                  <p id="review-description">
-                    I noticed an unfamiliar person walking around the houses on
-                    our street, taking pictures of properties and looking into
-                    windows. They were wearing a dark hoodie and jeans.
-                  </p>
-                </div>
+              <div class="review-item">
+                <div class="review-label">Description</div>
+                <p class="review-content" id="review-description">
+                  I noticed an unfamiliar person walking around the houses on
+                  our street, taking pictures of properties and looking into
+                  windows. They were wearing a dark hoodie and jeans.
+                </p>
+              </div>
 
-                <div class="mb-4">
-                  <h5 class="h6 text-muted">Attachments</h5>
-                  <div class="image-preview mb-3">
-                    <div class="row g-2">
-                      <div class="col-3 col-md-2">
-                        <div class="card h-100">
-                          <div
-                            class="d-flex justify-content-center align-items-center"
-                            style="height: 100px; background-color: #e9e9e9"
-                          >
-                            <i class="material-icons text-muted">add_a_photo</i>
-                          </div>
-                        </div>
-                      </div>
-                      <!-- Additional image previews will be added here dynamically -->
-                    </div>
-                  </div>
-                </div>
+              <div class="review-item">
+                <div class="review-label">Reporter Information</div>
+                <p class="review-content" id="review-reporter">
+                  John Doe<br />
+                  john.doe@example.com
+                </p>
+              </div>
 
-                <div class="mb-4">
-                  <h5 class="h6 text-muted">Reporter Information</h5>
-                  <p id="review-reporter">John Doe<br />john.doe@example.com</p>
-                </div>
-
-                <div class="d-flex justify-content-between">
-                  <button
-                    type="button"
-                    class="btn btn-outline-secondary btn-prev"
-                    data-prev="step2"
-                  >
-                    Back to Details
-                  </button>
-                  <button type="submit" class="btn btn-primary">
-                    Submit Report
-                  </button>
-                </div>
+              <div class="step-navigation">
+                <button
+                  type="button"
+                  class="btn-step btn-step-secondary btn-prev"
+                  data-prev="step2"
+                >
+                  <i class="material-icons">arrow_back</i>
+                  Back to Details
+                </button>
+                <button type="submit" class="btn-step btn-step-primary">
+                  <i class="material-icons">send</i>
+                  Submit Report
+                </button>
               </div>
             </div>
           </div>
+        </div>
 
-          <!-- Success Message (Initially Hidden) -->
-          <div
-            id="successMessage"
-            class="report-step text-center py-5"
-            style="display: none"
-          >
-            <div class="py-5">
-              <div class="mb-4">
-                <span class="success-icon">
-                  <i class="material-icons">check_circle</i>
-                </span>
+        <!-- Success Message -->
+        <div id="successMessage" class="report-step" style="display: none">
+          <div class="report-card">
+            <div class="success-container">
+              <div class="success-icon">
+                <i class="material-icons">check_circle</i>
               </div>
-              <h2 class="h3 mb-4">Incident Reported Successfully!</h2>
-              <p class="mb-4">
-                Your incident has been reported with ID:
-                <strong>LI-23-0079</strong>
+              <h2 class="success-title">Report Submitted Successfully!</h2>
+              <p class="success-subtitle">
+                Your incident report has been received and is being processed.
               </p>
-              <p class="mb-4">
-                A community safety leader will review your report shortly.
-                You'll receive notifications when there are updates.
+              <div class="report-id">Report ID: LI-23-0079</div>
+              <p>
+                A community safety leader will review your report within 24
+                hours. You'll receive email notifications about any updates or
+                requests for additional information.
               </p>
-              <div class="text-muted mb-4">
-                <h5 class="h6">Local Resources</h5>
-                <div class="row justify-content-center">
-                  <div class="col-md-8">
-                    <div class="d-flex justify-content-center flex-wrap gap-2">
-                      <a href="#" class="btn btn-outline-secondary btn-sm">
-                        <i class="material-icons small align-middle"
-                          >local_police</i
-                        >
-                        Police Department
-                      </a>
-                      <a href="#" class="btn btn-outline-secondary btn-sm">
-                        <i class="material-icons small align-middle"
-                          >health_and_safety</i
-                        >
-                        Emergency Services
-                      </a>
-                      <a href="#" class="btn btn-outline-secondary btn-sm">
-                        <i class="material-icons small align-middle"
-                          >support_agent</i
-                        >
-                        Victim Support
-                      </a>
-                    </div>
-                  </div>
-                </div>
+
+              <div class="resource-links">
+                <a href="#" class="resource-link">
+                  <i class="material-icons">local_police</i>
+                  Police Department
+                </a>
+                <a href="#" class="resource-link">
+                  <i class="material-icons">health_and_safety</i>
+                  Emergency Services
+                </a>
+                <a href="#" class="resource-link">
+                  <i class="material-icons">support_agent</i>
+                  Victim Support
+                </a>
               </div>
-              <div>
-                <a href="dashboard.html" class="btn btn-primary"
-                  >Return to Dashboard</a
-                >
+
+              <div style="margin-top: var(--space-xl)">
                 <a
-                  href="report-incident.html"
-                  class="btn btn-outline-secondary ms-2"
-                  >Report Another Incident</a
+                  href="{{ url_for('dashboard') }}"
+                  class="btn-step btn-step-primary"
                 >
+                  <i class="material-icons">dashboard</i>
+                  Return to Dashboard
+                </a>
+                <a
+                  href="{{ url_for('report_incident_page') }}"
+                  class="btn-step btn-step-secondary"
+                  style="margin-left: var(--space-md)"
+                >
+                  <i class="material-icons">add</i>
+                  Report Another Incident
+                </a>
               </div>
             </div>
           </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   </div>
 </section>
-
-<!-- Footer -->
-<footer class="footer">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-6 mb-4 mb-lg-0">
-        <h4 class="footer-title">About Community Safety</h4>
-        <p>
-          Community Safety is a community safety platform designed to empower
-          residents and local leaders to work together in creating safer
-          neighborhoods through transparent incident reporting, data
-          visualization, and resource management.
-        </p>
-        <div class="footer-logos mt-3 mb-3">
-          <div
-            class="logo-item d-inline-flex justify-content-center align-items-center me-2"
-            style="
-              width: 100px;
-              height: 50px;
-              background-color: #1a3a6e;
-              color: white;
-              font-weight: bold;
-            "
-          >
-            Partner 1
-          </div>
-          <div
-            class="logo-item d-inline-flex justify-content-center align-items-center me-2"
-            style="
-              width: 100px;
-              height: 50px;
-              background-color: #1a3a6e;
-              color: white;
-              font-weight: bold;
-            "
-          >
-            Partner 2
-          </div>
-          <div
-            class="logo-item d-inline-flex justify-content-center align-items-center"
-            style="
-              width: 100px;
-              height: 50px;
-              background-color: #1a3a6e;
-              color: white;
-              font-weight: bold;
-            "
-          >
-            Partner 3
-          </div>
-        </div>
-        <div class="footer-social mt-3">
-          <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-          <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-          <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
-        </div>
-      </div>
-      <div class="col-lg-6">
-        <h4 class="footer-title">Get in Touch</h4>
-        <ul class="footer-contact">
-          <li>
-            <i class="material-icons">location_on</i>
-            <span>CommunitySafety.org</span>
-          </li>
-          <li><i class="material-icons">phone</i> <span>555-123-4567</span></li>
-          <li>
-            <i class="material-icons">email</i>
-            <span>info@communitysafety.org</span>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <div class="row align-items-center">
-        <div class="col-md-6 mb-3 mb-md-0">
-          <p class="mb-0">©2023 Community Safety. All Rights Reserved</p>
-        </div>
-        <div class="col-md-6 text-md-end">
-          <ul class="footer-links">
-            <li><a href="privacy.html">Privacy Policy</a></li>
-            <li><a href="terms.html">Terms of Service</a></li>
-            <li><a href="#">Sitemap</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</footer>
 
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
@@ -566,6 +936,32 @@
 <!-- Report Form Navigation Script -->
 <script>
   document.addEventListener('DOMContentLoaded', function () {
+    // File upload functionality
+    document.querySelectorAll('.file-upload-area').forEach(area => {
+      const input = area.querySelector('input[type="file"]')
+
+      area.addEventListener('click', () => input.click())
+
+      area.addEventListener('dragover', e => {
+        e.preventDefault()
+        area.style.borderColor = 'var(--secondary-color)'
+        area.style.background = 'rgba(49, 130, 206, 0.05)'
+      })
+
+      area.addEventListener('dragleave', e => {
+        e.preventDefault()
+        area.style.borderColor = 'var(--border-color)'
+        area.style.background = 'var(--bg-light)'
+      })
+
+      area.addEventListener('drop', e => {
+        e.preventDefault()
+        area.style.borderColor = 'var(--border-color)'
+        area.style.background = 'var(--bg-light)'
+        input.files = e.dataTransfer.files
+      })
+    })
+
     // Next buttons
     document.querySelectorAll('.btn-next').forEach(button => {
       button.addEventListener('click', function () {
@@ -576,21 +972,41 @@
         // If going to review step, update review values
         if (nextStepId === 'step3') {
           // Update review information
-          document.getElementById('review-location').textContent =
-            document.querySelector('[name="location_address"]').value
-          document.getElementById('review-datetime').textContent = new Date(
-            document.querySelector('[name="incident_datetime"]').value
-          ).toLocaleString()
-          document.getElementById('review-type').textContent =
-            document.querySelector('[name="incident_type"]').options[
-              document.querySelector('[name="incident_type"]').selectedIndex
-            ].text
-          document.getElementById('review-description').textContent =
-            document.querySelector('[name="description"]').value
+          const locationInput = document.querySelector(
+            '[name="location_address"]'
+          )
+          const datetimeInput = document.querySelector(
+            '[name="incident_datetime"]'
+          )
+          const typeSelect = document.querySelector('[name="incident_type"]')
+          const descriptionInput = document.querySelector(
+            '[name="description"]'
+          )
+
+          if (locationInput) {
+            document.getElementById('review-location').textContent =
+              locationInput.value || 'Not specified'
+          }
+
+          if (datetimeInput && datetimeInput.value) {
+            document.getElementById('review-datetime').textContent = new Date(
+              datetimeInput.value
+            ).toLocaleString()
+          }
+
+          if (typeSelect && typeSelect.selectedIndex >= 0) {
+            document.getElementById('review-type').textContent =
+              typeSelect.options[typeSelect.selectedIndex].text
+          }
+
+          if (descriptionInput) {
+            document.getElementById('review-description').textContent =
+              descriptionInput.value || 'No description provided'
+          }
+
+          // Update reporter info (these are hardcoded in this demo)
           document.getElementById('review-reporter').innerHTML =
-            document.querySelector('[name="reporter_name"]').value +
-            '<br />' +
-            document.querySelector('[name="reporter_contact"]').value
+            'John Doe<br>john.doe@example.com'
         }
 
         // Hide current step and show next step
@@ -599,6 +1015,11 @@
 
         // Update progress bar
         updateProgress(nextStepId)
+
+        // Scroll to top of form section
+        document
+          .querySelector('.report-form-section')
+          .scrollIntoView({ behavior: 'smooth' })
       })
     })
 
@@ -615,6 +1036,11 @@
 
         // Update progress bar
         updateProgress(prevStepId)
+
+        // Scroll to top of form section
+        document
+          .querySelector('.report-form-section')
+          .scrollIntoView({ behavior: 'smooth' })
       })
     })
 
@@ -625,17 +1051,17 @@
       else if (stepId === 'step2') progress = 66
       else if (stepId === 'step3') progress = 100
 
-      document.getElementById('reportProgress').style.width = progress + '%'
-      document
-        .getElementById('reportProgress')
-        .setAttribute('aria-valuenow', progress)
+      const progressFill = document.getElementById('reportProgress')
+      if (progressFill) {
+        progressFill.style.width = progress + '%'
+      }
 
       // Update step circles
       document.querySelectorAll('.progress-step').forEach((step, index) => {
         if (
-          (stepId === 'step2' && index < 2) ||
-          (stepId === 'step3' && index < 3) ||
-          (stepId === 'step1' && index < 1)
+          (stepId === 'step1' && index === 0) ||
+          (stepId === 'step2' && index <= 1) ||
+          (stepId === 'step3' && index <= 2)
         ) {
           step.classList.add('active')
         } else {
@@ -643,6 +1069,26 @@
         }
       })
     }
+
+    // Form submission handling
+    document
+      .getElementById('reportForm')
+      .addEventListener('submit', function (e) {
+        e.preventDefault()
+
+        // Hide the current step and show success message
+        document.querySelector('.report-step.active').classList.remove('active')
+        document.getElementById('successMessage').style.display = 'block'
+        document.getElementById('successMessage').classList.add('active')
+
+        // Scroll to top of form section
+        document
+          .querySelector('.report-form-section')
+          .scrollIntoView({ behavior: 'smooth' })
+      })
+
+    // Initialize progress bar
+    updateProgress('step1')
   })
 </script>
 {% endblock %}
